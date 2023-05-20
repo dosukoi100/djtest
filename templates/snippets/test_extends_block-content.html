@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {# 1 このファイルをextendsする場合、反映先のファイルので全て反映される #}
+    {# 2 このファイルのblockは塊の意味のblockである #}
+    {# 3 反映先のファイルで使うblockは阻害するのblockである #}
+
+    {% block context %}
+    <div>
+        <p>どすこい1</p>
+        <p>どすこい2</p>
+        <p>どすこい3</p>
+        <p>どすこい4</p>
+        <p>どすこい5</p>
+    </div>
+    <input type="submit">どすこい6</input>
+    {% endblock %}
+
+    {% block footer %}
+    {% include 'snippets/test_footer.html' %}
+    {% endblock %}
+    
+</body>
+<div>
+</html>

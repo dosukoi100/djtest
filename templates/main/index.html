@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {# 反映するファイルを指定する #}
+    {% extends 'snippets/test_extends_block-content.html' %}
+    
+    {# 'block 〇〇'で反映するファイルの'block(塊) 〇〇'をblock(阻害する) #}
+    {# つまり、反映するファイルの'block 〇〇(塊)'を書き換えることができる #}
+    {# 例では反映するファイルの'block footer'の部分を書き換えている #}
+
+    {% block footer %}
+    
+    <p><a href="https://www.amazon.co.jp"> Amazon </a></p>
+    
+    {% endblock %}
+
+    {# extends(拡張する)しているので反映するファイルを基本的に #}
+    {# ロードしているので'block 〇〇'としていないところは反映されない #}
+
+    <input type="submit">どすこい8</input> {#反映されない#}
+</body>
+<input type="submit">どすこい9</input> {# 反映されない #}
+</html>
