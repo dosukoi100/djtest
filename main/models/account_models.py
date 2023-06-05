@@ -104,27 +104,36 @@ class User(AbstractBaseUser,PermissionsMixin):
     #ここら辺は今はこんな感じだと思えば良いです
     #管理画面でモデルUserからusernameを選択すると
     #トップにusernameとidで表示する
+    #オブジェクト(レコードに文字列を返す関数)
     def __str__(self):
         #return self.email
         #ここのidもいらない
         #return f"{self.username} {self.id}"
         return self.username
     
+    #Userモデルで使われる関数。ユーザーに特定の権限があるか確
+    #認する関数
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
 
+    #Userモデルで使われる関数。ユーザーにアプリケーションモジュールの
+    #権限があるか確認する際に使われる
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
     
-
+    #Userモデルの属性(usernameやpassword,email,is_activeなど)
+    #の1つにis_staffがあります。そのis_staff属性を
+    #@propertyデコレータとして使用する
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
+        #staffとしたいなら
+        #return self.is_staff
         return self.is_admin
 
 

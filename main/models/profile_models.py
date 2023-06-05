@@ -9,7 +9,7 @@ from main.models import User
 from django.core import validators
 
 class Profile(models.Model):
-    username = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+    username = models.OneToOneField(get_user_model(),on_delete=models.CASCADE)
     member_number = models.IntegerField(unique=True,default=0,null=False,blank=False,
         validators=[validators.MinValueValidator(1),
                     validators.MaxValueValidator(999)])
@@ -23,4 +23,12 @@ class Profile(models.Model):
     #市区町村 
     city = models.CharField(default="",max_length=100) 
     #町名等 
-    address = models.CharField(default="",max_length=100) 
+    address = models.CharField(default="",max_length=100)
+    
+    
+    def __str__(self):
+        #return self.email
+        #ここのidもいらない
+        return f"{self.username}さん (番号は{self.member_number}です。)"
+        #return self.member_number
+    
