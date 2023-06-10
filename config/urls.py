@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from main import views 
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('',views.index),
+    path('login/',views.Login.as_view()),
+    path('task_main/',views.task_main),
+    path('logout/',LogoutView.as_view()),
+    path('extends_block_test/',views.extends_block_test),
     path('report/',include('report.urls')),
 ]

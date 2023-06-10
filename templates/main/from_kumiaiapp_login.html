@@ -1,0 +1,86 @@
+{# ログイン画面 PHP版組合アプリからの流用 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "main/css/style.css"%}>
+    <title>ログインする</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>ログインする</h1>
+    </div>
+    {% comment %}
+    <div>
+        {% if user.is_authenticated %}
+        ログイン中です
+        {% else %}
+        ログインしていません
+        {% endif %}
+    </div>
+    {% endcomment %}
+    <div id="content">
+        <div id="lead">
+            <p>お疲れ様です。メールアドレスとパスワードでログインして下さい。</p>
+            <br>
+            <p>入会手続きがまだの方はこちらからどうぞ。</p>
+            <br>
+            <p>&raquo;<a href="/signup5656/">入会手続きをする</a></p>
+            <br>
+        </div>
+        <form action="" method="post">
+            {#CSRFトークン発行#}
+            {% csrf_token %}
+            <dl>
+                <dt>メールアドレス</dt>
+                <dd>
+                    {#typeをemailとしてidを追加 Abstractを使っているのでログインならname="username" 新規登録ならname="email"#}
+                    <input type="email" id="id_email" name="username" size="20" maxlength="255" value="" placeholder="Email address" style="height:60px;" required autofocus/>
+                    {%comment%}
+                    <?php if (isset($error['login']) and $error['login'] === 'blank') :?>
+                        <?php //$error['login']を初期化して、blankなら↑ ?>
+                        <p class="error">* 組合員番号(下4桁)とパスワードをご記入ください</p>
+                    <?php endif; ?>
+                    <?php if (isset($error['login']) and $error['login'] === 'failed'): ?>
+                        <p class="error">* ログインに失敗しました。正しくご記入ください。</p>
+                    <?php endif ;?>
+                    {%endcomment%}
+                </dd>
+                <br>
+                {% comment %}
+                #クラスLoginViewはメールとパスワードで認証しているのでコメントアウト
+                <dt>氏名</dt>
+                <dd>
+                    {#typeをtextとしてidを追加#}
+                    <input type="text" id="id_name" name="name" size="20" maxlength="16" value="" placeholder="Name" required/>
+                </dd>
+                {% endcomment %}
+                <dt>パスワード</dt>
+                <dd>
+                    {#typeをpasswordとしてidを追加#}
+                    {#minlengthで最小文字数、maxlengthで最大値以上文字を打てなくする。本番環境は6文字以上にする#}
+                    <input type="password" id="id_password" name="password" size="20"  minlength="4" maxlength="32" value="" placeholder="Password" style="height:60px;"required/>
+                </dd>
+            </dl>
+            <br>
+            <br>
+            {% include 'snippets/grecaptcha.html' %}
+            <br>
+            <br>
+            <div>
+                <input type="submit" id="submit" value="ログインする" style="width:300px;height:70px;" disabled />
+            </div>
+        </form>
+        <br>
+        <p>サイトキーエラーの場合は一度reCAPTCHAをリフレッシュして下さい。</p>
+        <br>
+        <a href="/login21/">reCAPTCHAリフレッシュ<a/>
+        {#{{ req }}#}
+    </div>
+</div>
+</body>
+</html>

@@ -1,29 +1,35 @@
-<!DOCTYPE html>
-<html lang="ja">
+{# ログイン画面 PHP版組合アプリからの流用 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>ホーム画面</title>
 </head>
 <body>
-    {# 反映するファイルを指定する #}
-    {% extends 'snippets/test_extends_block-content.html' %}
-    
-    {# 'block 〇〇'で反映するファイルの'block(塊) 〇〇'をblock(阻害する) #}
-    {# つまり、反映するファイルの'block 〇〇(塊)'を書き換えることができる #}
-    {# 例では反映するファイルの'block footer'の部分を書き換えている #}
-
-    {% block footer %}
-    
-    <p><a href="https://www.amazon.co.jp"> Amazon </a></p>
-    
-    {% endblock %}
-
-    {# extends(拡張する)しているので反映するファイルを基本的に #}
-    {# ロードしているので'block 〇〇'としていないところは反映されない #}
-
-    <input type="submit">どすこい8</input> {#反映されない#}
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>ホーム画面へようこそ</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>お疲れ様です。メールアドレスとパスワードでログインして下さい。</p>
+            <br>
+            <p>&raquo;<a href="/login/">ログインする</a></p>
+            <br>
+            <p>入会手続きがまだの方はこちらからどうぞ。</p>
+            <br>
+            <p>&raquo;<a href="/signup/">入会手続きをする</a></p>
+            <br>
+            <p>extendsやblock〇〇で遊びたい時はこちら</p>
+            <br>
+            <p>&raquo;<a href="/extends_block_test/">extendsやblock〇〇で遊ぶ</a></p>
+            <br>
+        </div>
+    </div>
+</div>
 </body>
-<input type="submit">どすこい9</input> {# 反映されない #}
 </html>

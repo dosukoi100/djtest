@@ -1,0 +1,43 @@
+{# ログイン画面 PHP版組合アプリからの流用 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>ログイン後の選択画面</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>ログイン後選択画面</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <h2>選択画面:</h2>
+            <p>{{ user.username }}さん、タスクを選んでください</p>
+            <br>
+            <p>ホーム画面に戻る</p>
+            <br>
+            <p>&raquo;<a href="/">ホーム画面へ</a></p>
+            <br>
+            <p>経費申請画面</p>
+            <br>
+            <p>&raquo;<a href="/report/">経費申請画面へ</a></p>
+            <br>
+            <p>ログアウトする</p>
+            <br>
+            <p>&raquo;<a href="/logout/">ログアウト</a></p>
+            <br>
+            <p>{{ dosukoi }}</p>
+            <br>
+            <a href="#"><input type="submit" value="{{ message }}"></input></a>
+            <br>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
