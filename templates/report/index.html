@@ -1,2 +1,38 @@
 {# 報告のインデックスページです #}
-どすこーい index
+
+{# ログイン画面 PHP版組合アプリからの流用 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>報告一覧</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>報告一覧</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。報告をよろしくお願いいたします。</p>
+            <br>
+            <p>経費を報告する:</p>
+            <p>&raquo;<a href="/report/cost/">経費の入力</a></p>
+            <br>
+            <p>収入の報告をする:</p>
+            <br>
+            <p>&raquo;<a href="/report/incomes/">収入の入力</a></p>
+            <br>
+            <p>ログアウトする</p>
+            <br>
+            <a href="/logout/"><input type="submit" value="ログアウトする"></input></a>
+            <br>
+        </div>
+    </div>
+</div>
+</body>
+</html>

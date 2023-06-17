@@ -1,4 +1,5 @@
-from tkinter import CASCADE
+
+#from tkinter import CASCADE
 from django.db import models
 #バリデーター
 from django.core import validators
@@ -31,7 +32,23 @@ class Cost(models.Model):
         return f"{self.username} (番号は{self.member_number}です。)"
         #return self.member_number
     '''
-        
+
+#収入のモデル 
+class Incomes(models.Model):
+    username = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+    member_number = models.ForeignKey(Profile,null=False,blank=False,validators=[validators.MinValueValidator(1),validators.MaxValueValidator(999)],on_delete=models.CASCADE,to_field="member_number",)
+    seireki = models.IntegerField(null=False,blank=False,validators=[validators.MinValueValidator(200001),validators.MaxValueValidator(299912)])
+    salary = models.IntegerField(default=0,null=False,blank=False)
+    bonus = models.IntegerField(default=0,null=False,blank=False)
+    temporary_income = models.IntegerField(default=0,null=False,blank=False)
+    total = models.IntegerField(null=False,blank=False)
+    create_at = models.DateField(auto_now_add=True,)
+    update_at = models.DateField(auto_now=True,)
+    
+    def __str__(self):
+        return f"{self.username}の{self.seireki}収入です"
+    
+    
 #Chatgtpからのdef __str__関数(特殊関数)の練習用のモデル
 class Testchatgtp(models.Model):
     name = models.CharField(max_length=15)

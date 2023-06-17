@@ -1,8 +1,9 @@
 from django.urls import path,include
-from . import views
+from report import views
 
 urlpatterns = [
-    path('',views.index),
-    path('cost/',views.cost),
-    path('income/',views.income),
+    path('',views.index),#タスク選択画面
+    path('cost/',views.cost),#cost入力画面
+    path('cost_conform/',views.cost_conform),#costの確認、修正画面
+    path('incomes/',views.incomes), 
 ]

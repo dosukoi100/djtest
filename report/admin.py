@@ -2,11 +2,12 @@ from django.contrib import admin
 #from djangoproject.test1_basic_django.report.models import Testchatgtp
 
 #report/models.pyからcostモデルを呼び出す
-from report.models import Cost
+from report.models import Cost,Incomes
 from report.models import Testchatgtp
 
 # Register your models here.
 
+#costモデルの表示
 class CostAdmin(admin.ModelAdmin):
     fieldsets = (
         ('氏名',{
@@ -88,7 +89,52 @@ class CostAdmin(admin.ModelAdmin):
     #この場合はusernameとmember_numberはlist_filterで指定する
     search_fields = ['seireki',]
 
+class IncomesAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('氏名',{
+            'fields':('username',),
+            'description':'組合員のフルネームを入れて下さい',
+        }),
+        ('組合番号',{
+            'fields':('member_number',),
+            'description':'組合員番号を入れて下さい',
+        }),
+        ('年月',{
+            'fields':('seireki',),
+            'description':'西暦(年月)を入れて下さい(例:2001年1月なら200101)',
+        }),
+        ('給料収入',{
+            'fields':('salary',),
+            'description':'当月の給与収入を入れて下さい',
+        }),
+        ('ボーナス',{
+            'fields':('bonus',),
+            'description':'ボーナスがあれば入れて下さい',
+        }),
+        ('臨時収入',{
+            'fields':('temporary_income',),
+            'description':'臨時収入があれば入れて下さい',
+        }),
+        ('総収入',{
+            'fields':('total',),
+            'description':'当月の総収入を入れて下さい',
+        }),
+    )
+    
+    list_display = ('member_number','username','seireki','create_at','update_at',)
+    
+    list_filter = ('username',)
+    
+    ordering = ('-member_number',)
+    
+    search_fields = ['seireki',]
+    
+
 #管理画面にCostモデルを表示可能とする
 admin.site.register(Cost,CostAdmin)
 
+admin.site.register(Incomes,IncomesAdmin)
+
 admin.site.register(Testchatgtp)
+
+
