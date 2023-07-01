@@ -1,0 +1,24 @@
+{# 仕分の完了画面です #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>仕分入力完了画面</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>仕分入力完了画面</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。仕分の入力が完了しました。</p>
+            
+        </div>
+    </div>
+</div>
+</body>
+</html>

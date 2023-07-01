@@ -1,1 +1,73 @@
-costの確認・修正画面です
+{# 支出の入力ページです #}
+
+{# ログイン画面 PHP版組合アプリからの流用 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>経費確認・訂正画面</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>経費確認・訂正画面</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。経費報告の入力をよろしくお願いいたします。</p>
+            <form action="" method="post">
+                {#{{ cost_form.as_p }}#}{# 動的ファイルを適応する場合はこちら #}
+                {% csrf_token %}
+
+                {% if user.is_authenticated %}
+                <input type="hidden" name="username" id="id_username" value="{{ user.id }}">
+                <input type="hidden" name="member_number" id="id_member_number" value="{{ member_number }}">
+                {% endif %}
+                <br>
+                <p>年月(2002年07月なら200207):</P>
+                <input type="number" name="seireki" id="id_seireki" placeholder="YYYY/MM" value="{{ seireki }}" required />
+                <br>
+                <p>交通費:</P>
+                <input type="number" name="koutuuhi" id="id_koutuuhi" placeholder="交通費" value="{{ koutuuhi }}" required />
+                <br>
+                <p>食費:</P>
+                <input type="number" name="shokuhi" id="id_shokuhi" placeholder="食費" value="{{ shokuhi }}" required />
+                <br>
+                <p>洋服費:</P>
+                <input type="number" name="youfukuhi" id="id_youfukuhi" placeholder="洋服費" value="{{ youfukuhi }}" required />
+                <br>
+                <p>税金:</P>
+                <input type="number" name="zeikinn" id="id_zeikinn" placeholder="税金" value="{{ zeikinn }}" required />
+                <br>
+                <p>保険:</P>
+                <input type="number" name="hoken" id="id_hoken" placeholder="保険" value="{{ hoken }}" required />
+                <br>
+                <p>光熱費:</P>
+                <input type="number" name="kounetuhi" id="id_kounetuhi" placeholder="光熱費" value="{{ kounetuhi }}" required />
+                <br>
+                <p>家賃:</P>
+                <input type="number" name="yachin" id="id_yachin" placeholder="家賃" value="{{ yachin }}" required />
+                <br>
+                <p>駐車場代:</P>
+                <input type="number" name="chuushajoudai" id="id_chuushajoudai" placeholder="駐車場代" value="{{ chuushajoudai }}" required />
+                <br>
+                <p>雑費:</P>
+                <input type="number" name="zapi" id="id_zapi" placeholder="雑費" value="{{ zapi }}" required />
+                <br>
+                <br>
+                <p>合計:</P>
+                <p name="total" id="id_total" >{{ total }}</p>
+                <br>
+                <br>
+                <input type="submit" value="確定する">
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{# 歩数を記録する一般用フォーム #}
+{%comment%}
+どすこい
+{{ test1_form.as_p }}
+{%endcomment%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>歩数入力</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>歩数入力</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。歩数の報告の入力をよろしくお願いいたします。</p>
+            <form action="" method="post">
+                {#{{ incomes_form.as_p }}#}{# 動的ファイルを適応する場合はこちら #}
+                {% csrf_token %}
+
+                
+                {% if user.is_authenticated %}
+                <input type="hidden" name="username" id="id_username" value="{{ user.id }}">
+                <input type="hidden" name="member_number" id="id_member_number" value="{{ profile_member_number }}">
+                {% endif %}
+                <br>
+                {%comment%}
+                {# 入力タイプ #}
+                <p>歩いた年月日(2002年07月14日なら2002-07-14):</P>
+                <input type="text" name="insert_day" id="id_insert_day" placeholder="YYYY-MM-DD" value="" required />
+                {%endcomment%}
+                {# カレンダー選択タイプ #}
+                <p>歩いた年月日:</P>
+                <input type="date" name="insert_day" id="id_insert_day" placeholder="YYYY-MM-DD" value="" required />
+                <br>
+                <br>
+                <p>歩数:</P>
+                <input type="number" name="walks" id="id_walks" placeholder="歩数" value="" required />
+                <br>
+                <br>
+                
+                <input type="submit" value="確定する">
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

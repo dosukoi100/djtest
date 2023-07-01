@@ -1,0 +1,107 @@
+{# 仕分の確認・訂正画面です #}
+
+{#{{ sort_form.as_p }}#}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>仕分確認・訂正</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>仕分確認・訂正</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。仕分の確認・訂正をよろしくお願いいたします。</p>
+            <form action="" method="post">
+                {#{{ sort.as_p }}#}{# 動的ファイルを適応する場合はこちら #}
+                {% csrf_token %}
+
+                {% if user.is_authenticated %}
+                <input type="hidden" name="exec_user" id="id_exec_user" value="{{ exec_user }}">
+                <input type="hidden" name="exec_user_number" id="id_exec_user_number" value="{{ exec_user_number }}">
+                {% endif %}
+                <br>
+                <p>実行日:</P>
+                <input type="date" name="exec_day" id="id_exec_day" placeholder="YYYY/MM/DD" value="{{ exec_day }}" required />
+                <br>
+                <br>
+                <p>借方項目:</P>
+                {#<input type="number" name="debit" id="id_debit" placeholder="-----" value="" required />#}
+                <select name="debit" required id="id_debit">
+                    {#<option value="" selected>---------</option>#}
+
+                    {# セッションを受け取りセッション値とdebit_valのidが一致なら先頭に表示 #}
+                    {% for i in  debit_val %}
+                    {% if i.id ==  debit  %}
+                    <option value="{{ i.id }}" selected>借方項目は{{ i.debit_item }}です</option>
+                    {% endif %}
+                    {% endfor %}
+
+                    {# 区切り #}
+                    {#<option value="" >---------</option>#}
+
+                    {# セッション値とdebit_valのidが一致していないときの処理 #}
+                    {% for i in  debit_val %}
+                    {% if i.id !=  debit  %}
+                    <option value="{{ i.id }}">借方項目は{{ i.debit_item }}です</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                <p>借方金額:</P>
+                <input type="number" name="debit_amount" id="id_debit_amount" placeholder="" value="{{ debit_amount }}" required />
+                <br>
+                <br>
+                <p>貸方項目:</P>
+                {# ここから続き #}
+                {#<input type="number" name="credit" id="id_credit" placeholder="-----" value="" required />#}
+
+                <select name="credit" required id="id_credit">
+                    {#<option value="" selected>{{ credit }}</option>#}
+                    {% comment %}
+                    {% for i in credit_val %}
+                    {% if i.id == credit %}
+                    <option value="{{ credit }}" selected>貸方項目は{{ i.credit_item }}です</option>
+                    {% endif %}
+                    {% endfor %}
+
+                    <option value="" >---------</option>
+                    {% endcomment %}
+                    
+                    {# ここからfor文で回していく #}
+                    {% for i in  credit_val %}
+                    {% if i.id ==  credit  %}
+                    <option value="{{ credit }}" selected>貸方項目は{{ i.credit_item }}です</option>
+                    {#<option value="">---------</option>#}
+                    {% elif i.id != credit %}
+                    <option value="{{ i.id }}">貸方項目は{{ i.credit_item }}です</option>
+                    {% endif %}
+                    {% endfor %}
+                    
+                </select>
+
+                <br>
+                <br>
+                <p>貸方金額:</P>
+                <input type="number" name="credit_amount" id="id_credit_amount" placeholder="" value="{{ credit_amount }}" required />
+                <br><br>
+                <p>仕分内容:</P>
+                <input type="text" name="comment" id="id_comment" placeholder="仕分内容を入れて下さい" value="{{ comment }}" required />
+                <br>
+                <br>
+                <input type="submit" value="確認・訂正する">
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
