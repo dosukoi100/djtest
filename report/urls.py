@@ -14,5 +14,9 @@ urlpatterns = [
     path('sort_conform/',views.sort_conform),#sortの確認・訂正
     path('sort_thankyou/',views.sort_thankyou), 
     
+    path('cashbook/',views.cashbook),
+    path('cashbook/conform/',views.cashbook_conform),
+    path('cashbook/thankyou/',views.cashbook_thankyou),
+    
     #-----models.forms.admin.urls.views.htmlの統合練習用----
 ]

@@ -2,7 +2,7 @@ from django.contrib import admin
 #from djangoproject.test1_basic_django.report.models import Testchatgtp
 
 #report/models.pyからcostモデルを呼び出す
-from report.models import Cost,Incomes,test1,Debit,Credit,Sort
+from report.models import Cost,Incomes,test1,Debit,Credit,Sort,Cashbook
 from report.models import Testchatgtp
 
 # Register your models here.
@@ -229,6 +229,46 @@ class SortAdmin(admin.ModelAdmin):
     search_fields = ['exec_user','exec_day',]
     
 
+class CashbookAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('実行者', {
+            "fields": ('exec_user',),
+            'description':'仕分入力者',
+        }),
+        ('実行者番号', {
+            "fields": ('exec_user_number',),
+            'description':'仕分入力者の番号',
+        }),
+        ('対象者', {
+            "fields": ('username',),
+            'description':'収支の対象者',
+        }),
+        ('借方項目', {
+            "fields": ('member_number',),
+            'description':'収支対象者の番号',
+        }),
+        ('西暦', {
+            "fields": ('seireki',),
+            'description':'対象年月',
+        }),
+        ('収入', {
+            "fields": ('income_total',),
+            'description':'対象年月の収入',
+        }),
+        ('支出', {
+            "fields": ('cost_total',),
+            'description':'対象年月の支出',
+        }),
+        ('収支', {
+            "fields": ('total',),
+            'description':'対象年月の収支',
+        }),
+    )
+    
+    list_display = ('exec_user','username','seireki','total','create_at','update_at')
+    ordering = ('-seireki',)
+    search_fields = ['exec_user','username','seireki']
+
 #-----models.forms.admin.urls.views.htmlの統合練習用----
 
 
@@ -249,6 +289,9 @@ admin.site.register(Credit,CreditAdmin)
 
 #仕分(Sort)
 admin.site.register(Sort,SortAdmin)
+
+#Costのtotal-Incomeのtotal格納するCashbook
+admin.site.register(Cashbook,CashbookAdmin)
 
 #-----models.forms.admin.urls.views.htmlの統合練習用----
 

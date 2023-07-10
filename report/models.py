@@ -93,6 +93,34 @@ class Sort(models.Model):
     
     def __str__(self):
         return f"{self.exec_day}の{self.comment}の仕分けです"
+    
+#Costのtotal-Incomeのtotal格納するモデル
+
+###############################################################
+#1つのモデルから複数のForeignKeyを使うときは必ずralated_nameを指定する#
+###############################################################
+
+#income_totalとcost_totalはreport/views.pyでIncomes,Cost
+#モデルでフィルターで値を格納するようにするのでForeignKeyでなく
+#IntegerFieldにする(ForeignKeyを使うにはIncomes,Costモデルの
+#totalをunique=True,にしなくてはいけなくコレも問題なので)
+
+class Cashbook(models.Model):
+    exec_user = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,related_name="cashbook_exec_user",)
+    exec_user_number = models.ForeignKey(Profile,null=False,blank=False,validators=[validators.MinValueValidator(1),validators.MaxValueValidator(999)],on_delete=models.CASCADE,to_field="member_number",related_name="cashbook_exec_user_number")
+    username = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,related_name="cashbook_username")
+    member_number = models.ForeignKey(Profile,null=False,blank=False,validators=[validators.MinValueValidator(1),validators.MaxValueValidator(999)],on_delete=models.CASCADE,to_field="member_number",related_name="cashbook_member_number")
+    seireki = models.IntegerField(null=False,blank=False,validators=[validators.MinValueValidator(200001),validators.MaxValueValidator(299912)])
+    #income_total = models.ForeignKey(Incomes,null=False,blank=False,on_delete=models.CASCADE,to_field="total",) 
+    #cost_total = models.ForeignKey(Cost,null=False,blank=False,on_delete=models.CASCADE,to_field="total",)
+    income_total = models.IntegerField(null=False,blank=False)
+    cost_total = models.IntegerField(null=False,blank=False)
+    total = models.IntegerField(null=False,blank=False)
+    create_at = models.DateField(auto_now_add=True,)
+    update_at = models.DateField(auto_now=True,)
+    
+    def __str__(self):
+        return f"{self.seireki}の{self.username}さんの収支です。実行者は{self.exec_user}です"
 
 
 

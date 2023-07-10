@@ -3,11 +3,11 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import get_user,get_user_model
 
 
-from main.models.profile_models import Profile
+from main.models.profile_models import User,Profile
 
-from report.forms import CostForm,IncomesForm,test1Form,SortForm
+from report.forms import CostForm,IncomesForm,test1Form,SortForm,CashbookForm
 
-from report.models import Debit,Credit,Sort
+from report.models import Debit,Credit,Sort,Cost,Incomes
 
 # Create your views here.
 
@@ -355,10 +355,258 @@ def sort_conform(request):
 #仕分完了
 def sort_thankyou(request):
     context = {}
-    return render(request,'report/sort_thankyou.html')
+    return render(request,'report/sort_thankyou.html',context)
 
 
 ##----仕分系------------##
+
+##----収支(Cashbook)--------------------##
+
+#検索画面
+def cashbook(request):
+    #GET
+    
+    #全てがいる訳ではないが練習を兼ねて記述
+    
+    #実行者のUserのidを取得
+    exec_user_rec = get_user(request)
+    exec_user_id = exec_user_rec.id
+    
+    #実行者のProfileのmember_number取得
+    exec_profile_rec = Profile.objects.get(username_id=exec_user_id)
+    exec_number = exec_profile_rec.member_number
+    
+    #対象者のUserモデルのidを取得
+    user_rec = User.objects.get(username='aaaa')#username='aaaa'は仮
+    user_id = user_rec.id
+    #print(user_id)
+    
+    ######セレクトボックス用##############################
+    user_all_rec = User.objects.all()
+    
+    profile_all_rec = Profile.objects.all()
+    ######セレクトボックス用##############################
+    
+    #対象者のProfileモデルのmember_numberを取得
+    profile_rec = Profile.objects.get(username_id=user_id)
+    user_number = profile_rec.member_number
+    #print(user_number)
+    
+    #Incomesモデルの取得
+    #オブジェクト全て
+    income_rec = Incomes.objects.all()
+    income_total_all = income_rec.values('total')
+    income_seireki_all = income_rec.values('seireki')
+    #print(income_total_all)
+    #print(income_seireki_all)
+    
+    #オブジェクトにフィルターをかける
+    income_rec_filter = Incomes.objects.filter(username_id=exec_user_id)#exec_user_idは仮
+    income_total_filter = income_rec_filter.values('total')
+    income_seireki_filter = income_rec_filter.values('seireki')
+    #print(income_total_filter)
+    #print(income_seireki_filter)
+    
+    #オブジェクトにand条件を加える(ForeignKeyフィールドはicontainsは使えない)
+    income_rec_filter_and = Incomes.objects.filter(username_id=1,seireki__icontains=2000,member_number_id=1)#数値は仮
+    income_total_filter_and = income_rec_filter_and.values('total')
+    income_seireki_filter_and = income_rec_filter_and.values('seireki')
+    #print(income_total_filter_and)
+    #print(income_seireki_filter_and)
+    
+    
+    #Costモデルの取得
+    
+    #例)Costモデルのtotalをリスト形式で取得する方法
+    
+    list1 = []
+    cost_rec = Cost.objects.all()
+    #for i in cost_rec.values():
+     #   print(i)
+    #print(cost_rec.values('total'))
+    for i in cost_rec.values('total'):
+        #print(i.values())
+        for j in i.values():
+            list1.append(j)
+    
+    #print(list1)
+    
+    for i in list1:
+        #print(i)
+        pass
+    
+    form = CashbookForm(request.POST.copy())
+    
+    context = {
+        #'cashbook_form' : form,
+        'exec_number' : exec_number,
+        'user_all_rec' : user_all_rec,
+        'profile_all_rec' : profile_all_rec,
+        
+    }
+    
+    #print('success1')
+    #POST
+    dic = {}
+    if request.method == 'POST':
+        context['req'] = request.POST.copy()
+        dic = context['req']
+        #print(dic)
+        #print('success2')
+        
+        #exec_userのidとexec_user_numberの値を格納
+        dic['exec_user'] = exec_user_id
+        dic['exec_user_number'] = exec_number
+        
+        #form = CashbookForm(dic)
+        
+        l=0
+        m=0
+        n=0
+        for i,j in dic.items():
+            #print(i,j)
+            if i == 'username':#フォームのusernameのvalue属性の値をlとする
+                l=j
+            elif i == 'member_number':
+                m=j
+            elif i == 'seireki':
+                n=j
+                
+        ###income###
+        
+        #続き)income_rec_filter_andが有る時無い時で条件分岐
+        
+        #フィルターを掛けてl,m,nの値を格納する。本番環境ならseirekiの方が良い
+        income_rec_filter_and = Incomes.objects.filter(username_id=l,member_number_id=m,seireki__icontains=n)
+        if income_rec_filter_and :
+            print('収入の記録があります')
+        
+            #取得したオブジェクトのtotalの値を格納(QuerySet)
+            income_total_filter_and = income_rec_filter_and.values('total')
+            #print(income_total_filter_and)
+            
+            #QueryDict→dict_valesにする。filterでオブジェクトは1つしか無いのでインデックス番号は0
+            income_total = income_total_filter_and[0].values()
+            #print(income_total)
+            
+            #dict_valesの値を変数にして格納
+            perpose_income_total = 0
+            for i in income_total:
+                #print(i)
+                perpose_income_total = i
+            
+            #dicのincome_totalの値をperpose_income_totalとする
+            dic['income_total'] = perpose_income_total
+            #print(dic)
+        else:
+            print('収入の記録がありません')
+            
+        ###cost###
+            
+        cost_rec_filter_and = Cost.objects.filter(username_id=l,member_number_id=m,seireki__icontains=n)
+        if cost_rec_filter_and:
+            cost_total_filter_and = cost_rec_filter_and.values('total')
+            cost_total = cost_total_filter_and[0].values()
+                
+            perpose_cost_total = 0 
+            for i in cost_total:
+                #print(i)
+                perpose_cost_total = i
+                    
+            dic['cost_total'] = perpose_cost_total
+            #print(dic)
+        else:
+            print('支出の記録がありません')
+        
+        ###cashbookのtotal###
+        
+        if income_rec_filter_and and cost_rec_filter_and:
+            perpose_cashbook_total = perpose_income_total - perpose_cost_total
+            dic['total'] = perpose_cashbook_total
+            #print(dic)
+        else:
+            #同じ表示画面上にセッションを貼って受け取ってメッセージを表示させようとしたが
+            #うまく表示されなかったのでmessagesで対応
+            from django.contrib import messages
+            #ここでは特にsettings.pyに記述することはなくてもOK
+            #messages.error(request,'記録がありません')
+            
+            #htmlファイルでmessagesという名のテンプレート変数を受け取れる
+            messages.add_message(request,messages.WARNING,'対象者の該当年月がありません。もう一度確認をお願い致します。')
+            return redirect('.')
+        
+        #一応Cashbookのフォームにdicを合わせているので使う
+        #特に合わせなくともセッションの受け取り側で加工もOK
+        form = CashbookForm(dic)
+        
+        #セッションを貼る
+        request.session['session_data'] = dic
+        
+        if form.is_valid():
+            return redirect('/report/cashbook/conform/')
+    
+    return render(request,'report/cashbook.html',context)
+
+#確認・変更画面
+def cashbook_conform(request):
+    #GET
+    #セッションの受け取り
+    var_session = request.session['session_data']
+    dic = {}
+    
+    #対象者のUserモデルのusernameを取得
+    user_rec = User.objects.get(id=var_session['username'])
+    user_username_str = user_rec.username
+    
+    #対象者のProfileのオブジェクト取得
+    user_profile_rec = Profile.objects.get(username_id=user_rec.id)
+    
+    ###########セレクトボックス用###########################
+    user_all_rec = User.objects.all()
+    
+    profile_all_rec = Profile.objects.all()
+    ###########セレクトボックス用###########################
+    
+    
+    context = {
+        'exec_user' : var_session['exec_user'],
+        'exec_user_number' : var_session['exec_user_number'],
+        'username' : var_session['username'],
+        'member_number' : var_session['member_number'],
+        'seireki' : var_session['seireki'],
+        'income_total' : var_session['income_total'],
+        'cost_total' : var_session['cost_total'],
+        'total' : var_session['total'],
+        'user_username_str' : user_username_str,
+        'user_profile_rec' : user_profile_rec,
+        'user_all_rec' : user_all_rec,
+        'profile_all_rec' : profile_all_rec,
+    }
+    
+    form = CashbookForm(request.POST.copy())
+    
+    #POST
+    #今回はここでは計算はしません。必要な場合は関数cashbookのPOST以降を参照
+    if request.method == 'POST':
+        context['req'] = request.POST.copy()
+        dic = context['req']
+        
+        form = CashbookForm(dic)
+        
+        if form.is_valid():
+            form.save()
+            del request.session['session_data']
+            return redirect('/report/cashbook/thankyou/')
+    
+    return render(request,'report/cashbook_conform.html',context)
+
+#完了画面
+def cashbook_thankyou(request):
+    context = {}
+    return render(request,'report/cashbook_thankyou.html',context)
+
+
+##----収支(Cashbook)--------------------##
  
 
 #-----models.forms.admin.urls.views.htmlの統合練習用----

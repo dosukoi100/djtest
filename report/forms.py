@@ -1,7 +1,7 @@
 #報告関係reportのフォームを定義
 
 from django import forms
-from report.models import Cost,Incomes,test1,Debit,Credit,Sort
+from report.models import Cost,Incomes,test1,Debit,Credit,Sort,Cashbook
 
 #経費フォームの定義
 class CostForm(forms.ModelForm):
@@ -84,6 +84,21 @@ class SortForm(forms.ModelForm):
             'credit',
             'credit_amount',
             'comment',
+        }
+        
+#Cost,Incomesからのtotalを格納するCashbook
+class CashbookForm(forms.ModelForm):
+    class Meta:
+        model = Cashbook
+        fields = {
+            'exec_user',
+            'exec_user_number',
+            'username',
+            'member_number',
+            'seireki',
+            'income_total',
+            'cost_total',
+            'total',
         }
         
 

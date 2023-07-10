@@ -1,0 +1,72 @@
+{# cashbookの確認・変更画面 #}
+
+{#{{ sort_form.as_p }}#}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>cashbook確認・訂正画面</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>cashbook確認・訂正画面</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。cashbookの確認・訂正をして下さい。</p>
+            <form action="" method="post">
+                {#{{ sort.as_p }}#}{# 動的ファイルを適応する場合はこちら #}
+                {% csrf_token %}
+
+                {% if user.is_authenticated %}
+                <input type="hidden" name="exec_user" id="id_exec_user" value="{{ exec_user }}">
+                <input type="hidden" name="exec_user_number" id="id_exec_user_number" value="{{ exec_user_number }}">
+                {% endif %}
+                <br>
+                <br>
+                <p>氏名:</P>
+                    <select name="username" required id="id_username">
+                        <option value="{{ username }}" selected>{{ user_username_str }}</option>
+
+                        {% for i in user_all_rec %}
+                        <option value="{{ i.id }}">{{ i.username }}</option>
+                        {% endfor %}
+                    
+                    </select>
+                <br>
+                <br>
+                <p>識別番号:</P>
+                    <select name="member_number" required id="id_member_number">
+                        <option value="{{ member_number }}" selected>{{ user_profile_rec }}</option>
+
+                        {% for i in profile_all_rec %}
+                        <option value="{{ i.member_number }}">{{ i }}</option>
+                        {% endfor %}
+                    
+                    </select>
+                <p>西暦(年月):</p>
+                    <input type="number" name="seireki" required id="id_seireki" value="{{ seireki }}">
+                <p>月の総収入:</p>
+                    <input type="number" name="income_total" required id="id_income_total" value="{{ income_total }}">
+                <p>月の総コスト:</p>    
+                    <input type="number" name="cost_total" required id="id_cost_total" value="{{ cost_total }}">
+                <p>月の総支出:</p>
+                    <input type="number" name="total" required id="id_total" value="{{ total }}">
+                <br>
+                <br>
+                <h2>値に問題がある場合はバックスキップで戻って本表を見て下さい</h2>
+                <br>
+                <br>
+                <input type="submit" value="確認・訂正する">
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
