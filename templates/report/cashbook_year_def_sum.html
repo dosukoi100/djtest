@@ -1,0 +1,119 @@
+
+{# Sum(aggregate)のCashbookモデルのtotalフィールドの総計の表示です #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>Sum(aggregate)の年での収支</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>Sum(aggregate)の年での収支</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            <p>{{ user.username }}さん、お疲れ様です。表示したい対象者の年の収支を検索をして下さい。</p>
+            <br>
+                {%comment%}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endcomment %}
+                {# メッセージの表示 #}
+                {% if messages %}
+                {% for i in messages %}
+                <h1 class="error">{{ i }}</h1>
+                {% endfor %}
+                {% endif %}
+                <br>
+                {% if messages %}
+                <p>＊エラーが出たら一度リロードして下さい</p>
+                {% else %}
+                <p>氏名・認識番号の選択、西暦(年:4桁)の指定をお願い致します。</p>
+                {% endif %}
+                <br>
+            <form action="" method="post">
+                {#{{ sort.as_p }}#}{# 動的ファイルを適応する場合はこちら #}
+                {% csrf_token %}
+
+                {% if user.is_authenticated %}
+                <input type="hidden" name="exec_user" id="id_exec_user" value="{{ exec_user_id }}">
+                <input type="hidden" name="exec_user_number" id="id_exec_user_number" value="{{ exec_user_number }}">
+                {% endif %}
+                <br>
+                <p>氏名:</P>
+                    <select name="username" required id="id_username">
+                        <option value="" selected>---------</option>
+                        
+                        {% for i in user_all_rec %}
+                        <option value="{{ i.id }}">{{ i.username }}</option>
+                        {% endfor %}
+
+                        {% comment %}
+                        <option value="1">aaaa</option>
+                    
+                        <option value="2">bbbb</option>
+                    
+                        <option value="3">cccc</option>
+                    
+                        <option value="4">dddd</option>
+                    
+                        <option value="6">xxxx</option>
+                    
+                        <option value="8">大先生</option>
+                        {% endcomment %}
+                    
+                    </select>
+                <br>
+                <br>
+                <p>識別番号:</P>
+                    <select name="member_number" required id="id_member_number">
+                        <option value="" selected>---------</option>
+
+                        {% for i in profile_all_rec %}
+                        <option value="{{ i.member_number }}">{{ i }}</option>
+                        {% endfor %}
+                    
+                        {% comment %}
+                        <option value="1">aaaaさん (番号は1です。)</option>
+                    
+                        <option value="2">bbbbさん (番号は2です。)</option>
+                    
+                        <option value="3">ccccさん (番号は3です。)</option>
+                    
+                        <option value="4">ddddさん (番号は4です。)</option>
+                    
+                        <option value="999">xxxxさん (番号は999です。)</option>
+                    
+                        <option value="777">大先生さん (番号は777です。)</option>
+                        {% endcomment %}
+                    
+                    </select>
+                <p>西暦(年):4桁で年を入力して下さい</p>
+                    <input type="number" name="seireki" required id="id_seireki">
+                
+                    
+                    <input type="hidden" name="total" required id="id_total" value="0">
+                <br>
+                <br>
+                <input type="submit" value="確認する">
+
+            </form>
+            <br>
+            {% if total %}
+            <p>年間収支は</p>
+            <p>{{ total }}円です</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

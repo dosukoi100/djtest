@@ -1,3 +1,4 @@
+from functools import total_ordering
 from django.shortcuts import render,redirect
 
 from django.contrib.auth import get_user,get_user_model
@@ -7,7 +8,7 @@ from main.models.profile_models import User,Profile
 
 from report.forms import CostForm,IncomesForm,test1Form,SortForm,CashbookForm
 
-from report.models import Debit,Credit,Sort,Cost,Incomes
+from report.models import Debit,Credit,Sort,Cost,Incomes,Cashbook
 
 # Create your views here.
 
@@ -607,6 +608,229 @@ def cashbook_thankyou(request):
 
 
 ##----収支(Cashbook)--------------------##
+
+
+###----Cashbookモデルのtotalフィールドの総計を取得する----###
+
+#オリジナル
+def cashbook_year(request):
+    #GET
+    
+    #ログインユーザー(実行者)(今回は本来は要らない)
+    exec_user_rec = get_user(request)
+    exec_user_id = exec_user_rec.id
+    
+    #ログインユーザーの認識番号(今回は本来は要らない)
+    exec_user_profile_rec = Profile.objects.get(username_id = exec_user_id)
+    exec_user_number = exec_user_profile_rec.member_number
+    
+    #Userモデルを展開
+    user_all_rec = User.objects.all()
+    
+    #Profileモデルを展開
+    profile_all_rec = Profile.objects.all()
+    
+    context = {
+        'exec_user_id' : exec_user_id,
+        'exec_user_number' : exec_user_number,
+        'user_all_rec' : user_all_rec,
+        'profile_all_rec' : profile_all_rec,
+    }
+    
+    #POST
+    
+    if request.method == 'POST':
+        #QuerySetをcontextのreqとしてdicに渡す
+        context['req'] = request.POST.copy()
+        dic = {}
+        dic = context['req']
+        #dicのキーを入れて値を格納
+        a = dic['username'] #セレクトボックスのバリュー(Userモデルのid)
+        b = dic['member_number'] #セレクトボックスのバリュー(Profileモデルのmember_number)
+        c = dic['seireki'] #年
+    
+        
+        #対象者のcashbookモデルの該当レコードを取得
+        terget_user_cashbook_rec = Cashbook.objects.filter(username_id = a,member_number_id = b,seireki__icontains=c)
+        
+        if terget_user_cashbook_rec:
+        
+            list1 = []
+            #terget_user_cashbook_recにtotalの値があるものを展開(複数も可)
+            for i in terget_user_cashbook_rec.values('total'):
+                print(i.values())
+                #リストにtotalがある辞書型を格納
+                #[{'total':val1},{'total':val2},...]となる
+                list1.append(i)
+            
+            print(list1)
+            #####################################################
+            #dict_valuesをリストに格納すると以後展開できなくなるので注意#
+            #####################################################
+            
+            n = 0
+            #リストを展開して辞書の要素を取り出し
+            #辞書のキーでバリューを呼び出し総和を求める
+            for i in list1:
+                print(i['total'])
+                total = i['total']
+                n += total
+                
+            context['total'] = n
+            
+            print(n)
+            
+        else:
+            from django.contrib import messages
+            
+            messages.add_message(request,messages.WARNING,'対象者の該当年月がありません。もう一度確認をお願い致します。') 
+        
+    return render(request,'report/cashbook_year.html',context)
+
+#sum関数
+def cashbook_year_def_sum(request):
+    #GET
+    
+    #Userモデルの展開
+    user_all_rec = User.objects.all()
+    
+    #Profileモデルの展開
+    profile_all_rec = Profile.objects.all()
+    
+    #Cashbookモデルのtotalフィールドの総計
+    
+    from django.db.models import Sum
+    #aggregateとSumの試し
+    #total = Cashbook.objects.aggregate(total=Sum('total'))['total']
+    #total = Cashbook.objects.filter(username_id=1,member_number_id=1,seireki__icontains=2000).aggregate(total=Sum('total'))['total']
+    
+    
+    context = {
+        'user_all_rec' : user_all_rec,
+        'profile_all_rec' : profile_all_rec,
+        #total' : total,
+    }
+    
+    #POST
+    
+    if request.method == 'POST':
+        dic = {}
+        context['req'] = request.POST.copy()
+        dic = context['req']
+        
+        #print(dic)
+        
+        a = dic['username']
+        b = dic['member_number']
+        c = dic['seireki']
+        
+        #print(a,b,c,type(a))
+        '''
+        
+        変数をint型にしたいならこちら
+        
+        a=int(a)
+        b=int(b)
+        c=int(c)
+        
+        print(a,b,c,type(a),type(b),type(c))
+        '''
+        
+        #filterメソッドの後にaggregateメソッドとSum関数を使う
+        #(値は辞書型なので)キーで値を取得する
+        total = Cashbook.objects.filter(username_id=a,member_number_id=b,seireki__icontains=c).aggregate(total=Sum('total'))['total']
+        
+        #print(total)
+        
+        if total:
+            context['total'] = total
+        else:
+            from django.contrib import messages
+            
+            messages.add_message(request,messages.WARNING,'対象者の該当年月がありません。もう一度確認をお願い致します。') 
+    
+    
+    return render(request,'report/cashbook_year_def_sum.html',context)
+
+#生SQL文からの取得
+def cashbook_year_sql_sum(request):
+    #GET
+    
+    #Userモデルの展開
+    user_all_rec = User.objects.all()
+    
+    #Profileモデルの展開
+    profile_all_rec = Profile.objects.all()
+    
+    #Cashbookモデルのtotalフィールドの総計
+    
+    from django.db import connection
+    
+    #お試しでSQLを叩いてみる
+    #with connection.cursor() as cursor:
+        #Userモデルのusername_idが1で西暦が2000のtotalの総計を計算
+        #cursor.execute("select sum(total) from report_cashbook where username_id = 1 and seireki like '%2000%';")
+        #totalはタプルで帰ってくるのでインデックス番号0を指定
+        #total = cursor.fetchone()
+        #total = cursor.fetchone()[0]
+        
+        #Userモデルのid=2の情報を取得
+        #cursor.execute('select username from main_user where id = 2')
+        #total = cursor.fetchall()
+        #for i in total:
+        #    print(i[0])
+        
+        #Userモデルの個数
+        #cursor.execute('select count(id) from main_user;')
+        #total = cursor.fetchone()[0]
+    
+    context = {
+        'user_all_rec' : user_all_rec,
+        'profile_all_rec' : profile_all_rec,
+        #'total' : total,
+    }
+    
+    #POST
+    if request.method == 'POST':
+        dic = {}
+        context['req'] = request.POST.copy()
+        dic = context['req']
+        
+        a = dic['username']
+        b = dic['member_number']
+        c = dic['seireki']
+        
+        #SQLite3の中間一致を使うためにcを整形
+        #ここはDBによって違うので注意
+        #c = ("'"+'%'+c+'%'+"'")
+        c = ('%'+ c +'%')
+        
+        #print(a,b,c,type(a),type(b),type(c))
+        
+        #DjangoでのDBに接続してSQL文を実行する
+        with connection.cursor() as cursor:
+            
+            #＊＊＊引数の引き渡しが上手くいかなかったので今回は.format関数で対応＊＊＊
+            #＊＊＊コメントアウトも構文的には問題無いみたい。ちなみにMySQLなら'%s'＊＊＊
+            #＊＊＊Streamlitの共同溝アプリも参照して下さい＊＊＊
+            
+            #sql = "select sum(total) from report_cashbook where username_id = ? and member_number_id = ? and seireki like ?;"
+            sql = "select sum(total) from report_cashbook where username_id = {} and member_number_id = {} and seireki like '{}' ;".format(a,b,c)
+            #cursor.execute(sql,(a,b,c,))
+            cursor.execute(sql)
+            total = cursor.fetchone()[0]
+            
+            
+        if total:
+            context['total'] = total
+        else:
+            from django.contrib import messages
+            
+            messages.add_message(request,messages.WARNING,'対象者の該当年月がありません。もう一度確認をお願い致します。') 
+            
+    return render(request,'report/cashbook_year_sql_sum.html',context)
+
+###----Cashbookモデルのtotalフィールドの総計を取得する----###
  
 
 #-----models.forms.admin.urls.views.htmlの統合練習用----

@@ -18,5 +18,13 @@ urlpatterns = [
     path('cashbook/conform/',views.cashbook_conform),
     path('cashbook/thankyou/',views.cashbook_thankyou),
     
+    ###Cashbookモデルのtotalフィールドの総計を取得する
+    
+    #オリジナル
+    path('cashbook_year/',views.cashbook_year),
+    #sum関数
+    path('cashbook_year_def_sum/',views.cashbook_year_def_sum),
+    #生SQL文からの取得
+    path('cashbook_year_sql_sum/',views.cashbook_year_sql_sum),
     #-----models.forms.admin.urls.views.htmlの統合練習用----
 ]
