@@ -1,0 +1,76 @@
+{# inputタグのtypeがnumberの場合の入力制限 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>JS入力の桁数とinputタグでのstyleの指定</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>JS入力の桁数とinputタグでのstyleの指定</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            {% if user.is_authenticated %}
+            <p>{{ user.username }}さん御疲れ様です。入力を御願い致します。</p>
+            <P></p>
+            {% endif %}
+        </div>
+        <form action="" method="post">
+            {#CSRFトークン発行#}
+            {% csrf_token %}
+            
+            <dl>
+                {# エラーに原因は各モデルのusernameはUserモデルとForignkeyを貼っているのでここはセレクトボックスのバリューにUserのidを渡す #}
+                {#<dt>氏名</dt> type="hidden"とするので隠す#}
+                <dd>
+                    {#typeをtextとしてidを追加#}
+                    {#<input type="text" id="id_username" name="username" size="20" maxlength="16" value="" placeholder="氏名" required/>#}
+                    {% if user.is_authenticated %}
+                    <input type="hidden" id="id_username" name="username" size="20" maxlength="16" value="{{user.id}}" />
+                    {% endif %}
+                </dd>
+                <dt>認識番号 : 認識番号の下3桁を半角数字で入力して下さい。</dt>
+                <p>(例) 10001なら001</p>
+                <dd>
+                    {#typeをnumberとしてidを追加#}
+                    {#<input type="number" id="id_member_number" name="member_number" size="20" maxlength="3" value="" placeholder="組合員番号" required/>#}
+                    {#Jsを記述して3桁しか入力できないようにする#}
+                    {#styleで幅を指定する#}
+                    <input type="number" id="id_member_number" name="member_number" size="20" min="1" max="999" oninput="javascript: this.value = this.value.slice(0, 3);" value="" placeholder="組合員番号" style="width:300px;" required/>
+                </dd>
+                <dt>西暦(年月) : 西暦(年月)で半角数字6桁で入力して下さい。</dt>
+                <p>(例)2010年10月なら201010</p>
+                <dd>
+                    {#typeをnumberとしてidを追加#}
+                    {#<input type="number" id="id_seireki" name="seireki" size="20" minlength="6" maxlength="6" value="" placeholder="年月" required/>#}
+                    {#Jsを記述して200001から209912までの6桁でしか入力できないようにする#}
+                    {#styleで幅を指定する#}
+                    <input type="number" id="id_seireki" name="seireki" size="20" min="200001" max="209912" oninput="javascript: this.value = this.value.slice(0, 6);" value="" placeholder="年月" style="width:300px;" required/>
+                </dd>
+            </dl>
+            <br>
+            <div>
+                {#<input type="submit" value="確定する"/>#}
+                <a href="conform/"><input type="submit" style="width:300px;height:70px;" value="確認する"/></a>
+                {% if button %}
+                {{ user.username }}
+                {{ req.seireki }}
+                {% endif %}
+            </div>
+        </form>
+        {#{{ req }}#}
+        {% comment %}
+        UserIDは 
+        {{ req.username}}
+        です
+        {% endcomment %}
+    </div>
+</div>
+</body>
+</html>

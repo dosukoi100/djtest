@@ -26,5 +26,6 @@ urlpatterns = [
     path('task_main/',views.task_main),
     path('logout/',LogoutView.as_view()),
     path('extends_block_test/',views.extends_block_test),
-    path('report/',include('report.urls')),
+    path('report/',include('report.urls')),#report
+    path('js_test/',include('js_test.urls')),#js_test
 ]

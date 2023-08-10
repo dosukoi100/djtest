@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load static %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>予習用3</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>{{ user.username }}さん御疲れ様です。入力を御願い致します。</p>
+        <P></p>
+    {% endif %}
+
+    <br>
+                <dd>
+                    <p id='timer'>00:00:00</p>
+                    <br>
+                    <div>
+                        <button id="start_stop">どすこいスタート</button>
+                    </div>
+                    {% comment %}
+                    <div>
+                        {#<input type="submit" value="確定する"/>#}
+                        <a href="conform/"><input id='start_stop' type="submit" style="width:300px;height:70px;" value="確認する"/></a>
+                        {% if button %}
+                        {{ user.username }}
+                        {{ req.seireki }}
+                        {% endif %}
+                    </div>
+                    {% endcomment %}
+                    {# 本来はjsはheadタグかbodyタグの最後に記述するか別ファイルを読み込むようにする #}
+                    <script>
+                        //var now = new Date();//時刻のインスタンス化
+
+                        //var seconds = now.getSeconds();//秒を取得
+                        //if文の例
+                        /*if (seconds < 10) {
+                            seconds = ('0'+seconds);
+                        };*/
+
+                        //var minutes = now.getMinutes();//分の取得
+                        /*if (minutes < 10) {
+                            minutes = ('0'+minutes);
+                        };*/
+
+                        //var hours = now.getHours();//時の取得
+                        /*if (hours < 10) {
+                            hours = ('0'+hours);
+                        }*/
+
+                        //同じようなコードが３つあるのは非効率なので関数を作る
+                        //関数
+                        var addZero = function(value) {
+                            if (value < 10) {
+                                value = ('0'+value);
+                            };
+                            return value;
+                        };
+
+                        //上の関数はjsでの一般的な書き方ですが他のスクリプトみたいな書き方も可能です
+                        /*
+                        function 関数名(引数) {
+                            実行式
+                        };
+                        */
+
+                        //関数の利用
+                        //seconds = addZero(seconds);
+                        //minutes = addZero(minutes);
+                        //hours = addZero(hours);
+
+                        //イベント・イベントドブリン
+                        //idがstart_stopのタグがクリックされた時の動作
+                        document.getElementById('start_stop').addEventListener('click',function() {
+                            var now = new Date();//時刻のインスタンス化
+                            var seconds = now.getSeconds();//秒を取得
+                            var minutes = now.getMinutes();//分の取得
+                            var hours = now.getHours();//時の取得
+
+                            //関数の利用
+                            seconds = addZero(seconds);
+                            minutes = addZero(minutes);
+                            hours = addZero(hours);
+
+                            document.getElementById('timer').innerHTML = hours + ':' +minutes + ':' + seconds;
+                        });
+
+                        //chatgtpでのコード(jsがbodyタグの後ろに無かった時)
+                        /*document.addEventListener('DOMContentLoaded', function() {
+                            document.getElementById('start_stop').addEventListener('click', function() {
+                                var now = new Date();
+                                var seconds = now.getSeconds();
+                                var minutes = now.getMinutes();
+                                var hours = now.getHours();
+                        
+                                seconds = addZero(seconds);
+                                minutes = addZero(minutes);
+                                hours = addZero(hours);
+                        
+                                document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
+                            });
+                        });*/
+                        
+
+
+                        //document.getElementById('timer').innerHTML = hours + ':' +minutes + ':' + seconds;
+
+                        //----ここまでのことを利用してストップウォッチを作る----
+
+                        //startをグローバル化
+                        var start;
+                        var timer_id;
+
+                        document.getElementById('start_stop').addEventListener('click',function() {
+                            if (this.innerHTML === 'どすこい(STOP)') {
+                                start = new Date();
+                            } else {
+                                clearInterval(timer_id);
+                                this.innerHTML = 'どすこいスタート';
+                            }
+                            
+                            //start = new Date();
+
+                            //document.getElementById('timer').innerHTML = start.getTime();
+                            //定期実行時刻を指定
+                            timer_id = setInterval(goTimer,10)//ミリ秒単位:1000ms=1s
+
+                            //STOPボタンにする
+                            this.innerHTML = 'どすこい(STOP)';
+                        });
+
+                        //秒・分・時が10未満の時の0を足す関数
+                        var addZero = function(value) {
+                            if (value < 10) {
+                                value = '0' + value;
+                            };
+                            return value;
+                        };
+
+                        var goTimer = function() {
+                            var now = new Date();
+
+                            var milli = now.getTime() - start.getTime();//getTime()で1970からの秒を取得
+                            var seconds = Math.floor(milli / 1000);//秒:Mathメソッドのfloor関数で整数化
+                            var minutes = Math.floor(seconds / 60);//分
+                            var hours = Math.floor(minutes / 60);//時
+
+                            //秒・分の整形
+                            seconds = seconds - minutes * 60;//ex)121(s)-2(m)*60=1秒
+                            minutes = minutes - hours * 60;
+
+                            //addZero関数の利用
+                            hours = addZero(hours);
+                            minutes = addZero(minutes);
+                            seconds = addZero(seconds);
+
+                            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;                            
+                        };
+                        
+                        //for文の練習
+                        /*
+                        for (var i = 0; i <= 5; i++) {
+                            document.write("00:00:" + i +'<br>');
+                            
+                        }
+                        */
+                    </script>
+                </dd>
+</body>
+</html>

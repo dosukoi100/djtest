@@ -1,0 +1,17 @@
+{# reCAPTCHAを表示するファイル #}
+
+{# reCAPTCHAウィジェットをページにレンダリングするJs #}
+{# 簡単に言うとreCAPTCHAとの通信で使う結果を返すJs製のAPI? #}
+<script src="https://www.google.com/recaptcha/api.js" style="width:300px;height:70px;" async defer></script>
+
+{# data-sitekey属性で本番又は開発環境のサイトキーを渡す #}
+<div class="g-recaptcha" data-sitekey={{ grecaptcha_sitekey }} data-callback="verifyCallback"></div>
+
+{# java scriptでコールバック関数を書いていく #}
+<script>
+    {#コールバック関数#}
+    function verifyCallback(response) {
+        //idがsubmitのタグのdisable属性を解除
+        document.getElementById('submit').disabled = false;
+    }
+</script>

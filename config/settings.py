@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from pathlib import Path
 from telnetlib import LOGOUT
+#yamlの追加
+import yaml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +32,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+#環境変数の適応(ローカル)
+if (DEBUG):
+    #yamlファイルの指定(画像ファイル、CSSなど)
+    with open(os.path.join(BASE_DIR,'secret','secret_dev.yaml')) as file:
+            #yamlファイルをロードしてインスタンス化
+            obj = yaml.safe_load(file)
+            #passwordをプロジェクトのどこからでもアクセスできるようにする
+            #os.environ['password'] = obj['password']
+            #passwordを表示(試験後コメントアウト)
+            #print('-----',obj['password'],'-----') 
+            #print('-----',os.environ['password'],'どす')
+            
+            #yaml(secret_dev.yaml)のキーを取得して環境変数の値を取得
+            for i in obj:
+                os.environ[i] = obj[i]
+else:
+    #本番環境
+    pass
+
 
 # Application definition
 
@@ -42,6 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "main",#main
     "report",#report
+    "js_test",#js_test
 ]
 
 MIDDLEWARE = [
