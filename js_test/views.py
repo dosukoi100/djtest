@@ -105,4 +105,9 @@ def test2(request):
 #勉強会用
 def test3(request):
     context = {}
-    return render(request,'js_test/test3.html',context) 
+    return render(request,'js_test/test3.html',context)
+
+#勉強会用
+def test4(request):
+    context = {}
+    return render(request,'js_test/test4.html',context) 

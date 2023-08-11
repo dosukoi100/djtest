@@ -11,4 +11,5 @@ urlpatterns = [
     path('test1/',views.test1),#当日教材用
     path('test2/',views.test2),#当日教材用
     path('test3/',views.test3),#当日教材用
+    path('test4/',views.test4),#当日教材用
 ]

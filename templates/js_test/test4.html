@@ -1,5 +1,7 @@
 {# inputタグのtypeがnumberの場合の入力制限 #}
 
+{# formタグを削除 #}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -7,12 +9,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
-    <title>勉強会用その1</title>
+    <title>勉強会用その4</title>
 </head>
 <body>
 <div id="wrap">
     <div id="head">
-        <h1><a href="/"><a/>勉強会用その1</h1>
+        <h1><a href="/"><a/>勉強会用その4</h1>
     </div>
     <div id="content">
         <div id="lead">
@@ -21,6 +23,44 @@
             <P></p>
             {% endif %}
         </div>
+
+        <div>
+            <script>
+                //配列
+                var lists = ['cat','dog','tiger','fish'];
+
+                document.write(lists[0] + '<br>');
+
+                //append
+                lists.push('shark');
+                //lists.append('monkey');これはダメ
+
+                //for + リスト
+                for (var i of lists) {
+                    document.write(i + '<br>');
+                };
+
+                //オブジェクト(リスト辞書型)
+
+                var foods = [{name:'パン',count:5},{naem:'ケーキ',count:4},];
+
+                document.write(foods[name]+'<br>');
+
+                document.write('パン'+5+'ケーキ'+4)+'<br>';
+
+                //for (var i,j of foods) {
+                //    document.write(foods[i]+foods[j]);
+                //}
+
+                //querySelector
+                //document.querySelector('span').write('捕まりました');
+            </script>
+
+            {# イメージの貼り付け #}
+            {#<img class="img-fluid" src="assets/img/portfolio/thumbnails/6.jpg" alt="..." />#}
+            {#<img  src={% static "img/test1.jpeg" %}  >#}
+        </div>
+        {% comment %}
         <form action="" method="post">
             {#CSRFトークン発行#}
             {% csrf_token %}
@@ -64,20 +104,53 @@
                 {% endif %}
             </div>
         </form>
+        {% endcomment %}
         {#{{ req }}#}
         {% comment %}
         UserIDは 
         {{ req.username}}
         です
         {% endcomment %}
+        <div>
+            <br>
+            <button id="start_stop">どすこいスタート</button>
+        </div>
     </div>
 </div>
 <script>
-    'use_strict';
-    //<p id="output">pythonです</p>
+    //'use strict';
 
-    console.log('ok');
-    //Document.getElementById('output').textContent='jsで書き換えました';
+    let strs = 'dosukoi';
+    const prices = 100; //定数(変更はしない)
+    var nums = 4;
+    document.write(strs);
+    document.write('値段は'+(prices*nums));
+
+    //if文
+    if (nums === 5) {
+        document.write('どすこい');
+    } else if (nums === 7){
+        document.write('ごっつんです');
+    } else {
+        document.write('横綱ちーたん');
+    }
+
+    //for文の練習
+    for (var i = 0; i <= 5; i++) {
+        document.write("00:00:" + i +'<br>');
+                            
+    }
+
+    //配列
+    var lists = ['cat','dog','tiger','fish'];
+
+    document.write(lists[0]);
+
+    //for + リスト
+    for (var i of lists) {
+        document.write(i + '<br>');
+    };
+    
 </script>
 </body>
 </html>
