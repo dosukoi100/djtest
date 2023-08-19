@@ -1,0 +1,179 @@
+{# js勉強会後 ストップウォッチを作る#}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>TIMER</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>TIMER</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            {% if user.is_authenticated %}
+            <p>{{ user.username }}さん御疲れ様です</p>
+            <P></p>
+            {% endif %}
+        </div>
+        <div>
+            <p id="timer">00:00:00</p>
+            <br>
+            <div>
+                <button id="start_stop" class="background-color:red">START</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    'use_strict';//今風のjsの宣言
+    //idのtimerのものを書き換える
+    //document.getElementById('timer').textContent='どすこい';
+    
+    var now = new Date();
+    var milli = now.getTime();//1970からの秒数
+    var seconds = now.getSeconds();//秒
+    var minutes = now.getMinutes();//分の取得
+    var hours = now.getHours();//時
+
+    //test
+    //document.write(Math.floor(milli/1000));//ミリ秒なので
+
+    //各要素が10未満の時、表示に0を足す処理
+    if (seconds < 10) {
+        seconds = '0'+seconds;
+    };
+
+    if (minutes < 10) {
+        minutes = '0'+minutes;
+    };
+
+    if (hours < 10) {
+        hours = '0' + hours;
+    };
+    //同じことを何回も書くのは非効率なので関数化する
+
+    //関数の作成
+    var addZero = function(value) {
+        if (value < 10) {
+            value = '0' + value;
+        };
+
+        return value;
+    };
+
+    //別の書き方
+    function test(req) {
+        if (req < 10) {
+            req = '0' + req;
+        };
+
+        return req;
+    };
+
+    //差分を取得(GET状態の時刻を取得)
+    //var get_time = now.getTime(); 
+    //get_time = Math.floor(get_time/1000);
+    var get_time;
+    var timer_id;
+
+    //イベントの利用
+    document.getElementById('start_stop').addEventListener('click',function() {
+        //クリックした時の時刻を格納して各要素をインスタンス化
+        //var now = new Date();//時間の取得
+        //var seconds = now.getSeconds();//秒
+        //var minutes = now.getMinutes();//分
+        //var hours = now.getHours();//時
+        //var milli = now.getTime();//1970からの秒数
+
+        if (this.innerHTML === 'START') {
+            get_time = new Date();
+            get_time = Math.floor(get_time/1000);
+            timer_id = setInterval(goTimer,10);
+            this.innerHTML = 'STOP';
+        } else if (this.innerHTML === 'STOP') {
+            //引数(setIntervalの返り値)を参照してsetIntervalを止める
+            clearInterval(timer_id);
+            this.innerHTML = 'START';
+
+        };
+
+        //get_time = new Date();
+        //get_time = Math.floor(get_time/1000);
+
+
+        //関数の利用
+        //seconds = addZero(seconds);
+        //minutes = addZero(minutes);
+        //hours = test(hours);
+
+        //document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
+        //milli = Math.floor(milli/1000);//ミリ秒を消す
+        //var seconds = Math.abs(get_time - milli);//絶対値
+
+        //var secnods = now_time;
+        //var minutes = 0;
+        //var hours = 0;
+
+        /*
+        if (seconds > 60) {
+            minutes = Math.floor(seconds/60);//61/60=1..=1
+            seconds = seconds - minutes*60;//61-1*60=1
+            hours = Math.floor(minutes/60);//62/60=1..=1
+            minutes = minutes - hours*60;//62-1*60=2
+        };
+
+        //関数の利用
+        seconds = addZero(seconds);
+        minutes = addZero(minutes);
+        hours = test(hours);
+        */
+
+        //関数を指定して定期実行する第二引数は間隔(ミリ秒)
+        //setIntervalはwindowオブジェクトのメソッド
+        //window.setInterval();
+        //setInterval(goTimer,10);
+
+        //this=document.getElementById('start_stop')
+        //this.innerHTML = 'STOP';
+
+        //document.getElementById('timer').innerHTML = hours+':'+minutes+':'+seconds;
+    });
+
+    //イベント時の変数を格納・表示する関数
+    //無名関数で呼び出すと実行する
+    var goTimer = function() {
+        var now = new Date();//時間の取得
+        var milli = now.getTime();//1970からの秒数
+
+        milli = Math.floor(milli/1000);//ミリ秒を消す
+        var seconds = Math.abs(get_time - milli);//絶対値
+
+        var minutes = 0;
+        var hours = 0;
+        
+        if (seconds > 60) {
+            minutes = Math.floor(seconds/60);//61/60=1..=1
+            seconds = seconds - minutes*60;//61-1*60=1
+            hours = Math.floor(minutes/60);//62/60=1..=1
+            minutes = minutes - hours*60;//62-1*60=2
+        };
+
+        //関数の利用
+        seconds = addZero(seconds);
+        minutes = addZero(minutes);
+        hours = test(hours);
+
+        document.getElementById('timer').innerHTML = hours+':'+minutes+':'+seconds;
+    };
+   
+    
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{# ともすたフォトライブラリー用html #}
+
+<!DOCTYPE html>
+{#<html lang="en">#}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    {#<meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {#------- google fontsからのフォント(文字書式用)CSS ---使わなくても良い----#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap" rel="stylesheet">
+    {#------- google fontsからのCSS -------#}
+
+    <link rel="stylesheet" href={% static "css/style_photo.css" %}>
+    <title>My Photo</title>
+</head>
+<body>
+    <header>
+        <h1>My Photos</h1>
+    </header>
+    <div class="container">
+        <div id="img_unit">
+            <div class="photo">
+                <img src={% static "img/img2.jpg" %}> 
+                <div class="inner"><p>コメント1<span>nickname</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

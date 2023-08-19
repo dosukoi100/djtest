@@ -1,0 +1,119 @@
+{# js勉強会後 日付表示を作る#}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/style.css"%}>
+    <title>TODAY</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>TODAY</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            {% if user.is_authenticated %}
+            <p>{{ user.username }}さん御疲れ様です</p>
+            <P></p>
+            {% endif %}
+        </div>
+        <div>
+            <script>
+                //strの表示
+                document.write('<p>2023/08/11</p>');
+                document.write("<p>{{ now_time }}</p>");
+
+                //intの表示
+                document.write(3525);
+
+                //四則演算
+                document.write(23+52);
+
+                //文字列連結
+                document.write('<br>'+'23+52は'+(23+52)+'です'+'<br>');
+                //document.write('<p>'+'23+52は'+(23+52)+'です'+'<p>');
+
+                //Python-Djangoのせいかこちらも可能
+                //document.write('本日ただいまの時刻は',"{{now_time}}",'です');
+                
+                //変数
+                var eng = 60;
+                var math = 90;
+                var lan = 45;
+                lan = 48;
+                lan = lan + 3;
+                lan += 3;
+                lan ++;
+                lan ++;
+                lan ++;//57
+                var total = eng+math+lan;
+                var avg = total/3;
+
+                document.write('テストの合計点は'+total+'です。平均は'+avg+'です'+'<br>');
+                
+                //配列
+                var aminal = ['cat','doc','fish','tiger'];
+                //配列の追加
+                aminal.push('shark');
+
+                //if文
+                if (avg >= 60) {
+                    document.write('pass'+'<br>');
+                } else if (avg < 59 && avg >= 50) {
+                    document.write('report'+'<br>');
+                } else {
+                    document.write('retest'+'<br>');
+                };
+
+                //for文
+                for (var i = 1;i <=5;i+=1) {
+                    document.write(i+'回目の時刻'+"{{ now_time }}"+'<br>');
+                };
+
+                //for文リスト展開
+                for (var j of aminal) {
+                    document.write(j+'::');
+                }
+            </script>
+            {# 年月日表示 #}
+            <script>
+                document.write('<br>');
+
+                //jsの場合
+                //jsで時刻情報全てを取得。new宣言も忘れずに
+                var now_time = new Date();
+        
+                var year = now_time.getFullYear();//年取得
+                //月は0から11までなのでプラス1する
+                var month = now_time.getMonth() + 1;//月
+                var day = now_time.getDate();//日
+
+                document.write(year+'/'+month+'/'+day+'<br>');
+
+                //時・分・秒
+                var hour = now_time.getHours();//時
+                var minute = now_time.getMinutes();//分
+                var second = now_time.getSeconds();//秒
+                
+                //document.write('ただいまの時刻は'+hour+':'+minute+':'+second+'です。');
+
+                //ここから年月日表示(python-Djangoの場合)
+                var year = "{{ year }}";
+                var month = "{{ month }}";
+                var day = "{{ day }}";
+                document.write(year+'/'+month+'/'+day+'<br>');
+            </script>
+            {#<p id="timer">00:00:00</p>#}
+            <br>
+            <div>
+                {#<button id="start_stop">START</button>#}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/* ともすたフォト用CSS  */ /* */
+/* padding(内側要素に余白) margin(外側要素に余白) */
+/* https://www.sejuku.net/blog/58049 */
+
+/*bodyタグ内の仕様*/
+body {
+    margin: 0;/*外側余白*/
+    padding: 0;/*内側余白*/
+    /*color: blueviolet;/*文字の色*/
+    /*background-color: rgba(26,55,229,0.06);/*背景の色*/
+    background-color: rgb(16, 209, 16);
+}
+
+/*クラス属性containerの仕様*/
+.container {
+    max-width: 600px;/*幅*/
+    margin: auto;/*中央揃い*/
+    box-shadow: 0px 0px 3px rgba(0,0,0, .3);/*この囲みに影を作る*/
+}
+
+/*写真の表示の調整*/
+/* imgタグの調整 */
+img {
+    width: 100%;
+    margin: 0;
+    vertical-align: top;
+}
+
+/* headerタグ内の使用 */
+header {
+    background-color: #007acc;
+    color: #fff;
+    width: 100%;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 25px;
+    padding: 5px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}

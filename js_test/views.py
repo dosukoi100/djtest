@@ -110,4 +110,28 @@ def test3(request):
 #勉強会用
 def test4(request):
     context = {}
-    return render(request,'js_test/test4.html',context) 
+    return render(request,'js_test/test4.html',context)
+
+#勉強会後の学び直し
+def basic1(request):
+    context = {
+        'now_time' : datetime.datetime.now(),
+        'year' : datetime.datetime.now().year,
+        'month' : datetime.datetime.now().month,
+        'day' : datetime.datetime.now().day,
+    }
+    return render(request,'js_test/basic1.html',context)
+
+ #勉強会後の学び直し
+def basic2(request):
+    context = {}
+    return render(request,'js_test/basic2.html',context)
+
+#勉強会後の学び直し
+def basic3(request):
+    context = {}
+    return render(request,'js_test/basic3.html',context)
+
+def basic4(request):
+    context = {}
+    return render(request,'js_test/basic4.html',context)

@@ -12,4 +12,8 @@ urlpatterns = [
     path('test2/',views.test2),#当日教材用
     path('test3/',views.test3),#当日教材用
     path('test4/',views.test4),#当日教材用
+    path('basic1/',views.basic1),#勉強会後ともスタに沿った物
+    path('basic2/',views.basic2),#勉強会後ともスタに沿った物
+    path('basic3/',views.basic3),#勉強会後ともスタに沿った物
+    path('basic4/',views.basic4),#勉強会後ともスタに沿った物
 ]
