@@ -1,0 +1,25 @@
+
+
+
+[
+    {
+        "path" : "/static/img/img01.jpg",
+        "name" : "りょーじー",
+        "caption" : "ダンディりょーじー"
+    },
+    {
+        "path" : "/static/img/img02.jpg",
+        "name" : "どすこいママ",
+        "caption" : "ちょっと可愛い"
+    },
+    {
+        "path" : "/static/img/img03.jpg",
+        "name" : "りょーじー",
+        "caption" : "小リスなりょーじー"
+    },
+    {
+        "path" : "/static/img/img04.jpg",
+        "name" : "ムーミン",
+        "caption" : "ムーミンまっしぐら!"
+    }
+]

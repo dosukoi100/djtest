@@ -132,6 +132,21 @@ def basic3(request):
     context = {}
     return render(request,'js_test/basic3.html',context)
 
-def basic4(request):
+#Djangoでの画面の表示
+def basic3_1(request):
+    #テンプレートタグfor用
+    lists = [1,2,3,4]
+    context = {
+        "lists" : lists,
+    }
+    return render(request,'js_test/basic3-1_django-for.html',context)
+
+#Ajax通信
+def basic3_2(request):
     context = {}
-    return render(request,'js_test/basic4.html',context)
+    return render(request,'js_test/basic3-2_ajax.html',context)
+
+#jQueryの学習
+def jq1(request):
+    context = {}
+    return render(request,'js_test/jq1.html',context)

@@ -15,5 +15,7 @@ urlpatterns = [
     path('basic1/',views.basic1),#勉強会後ともスタに沿った物
     path('basic2/',views.basic2),#勉強会後ともスタに沿った物
     path('basic3/',views.basic3),#勉強会後ともスタに沿った物
-    path('basic4/',views.basic4),#勉強会後ともスタに沿った物
+    path('basic3-1/',views.basic3_1),#勉強会後ともスタに沿った物
+    path('basic3-2/',views.basic3_2),#Ajax通信のところ
+    path('jq1/',views.jq1),#jQueryの学習
 ]

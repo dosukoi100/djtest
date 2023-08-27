@@ -2,28 +2,30 @@
 /* padding(内側要素に余白) margin(外側要素に余白) */
 /* https://www.sejuku.net/blog/58049 */
 
+/* .container-10{}の-10はmargin10pxの意味 */
+
 /*bodyタグ内の仕様*/
 body {
     margin: 0;/*外側余白*/
     padding: 0;/*内側余白*/
     /*color: blueviolet;/*文字の色*/
-    /*background-color: rgba(26,55,229,0.06);/*背景の色*/
-    background-color: rgb(16, 209, 16);
+    background-color: rgba(26,55,229,0.06);/*背景の色*/
+    /*background-color: rgb(16, 209, 16);*/
 }
 
 /*クラス属性containerの仕様*/
 .container {
     max-width: 600px;/*幅*/
-    margin: auto;/*中央揃い*/
+    margin: 0 auto;/*中央揃い*/
     box-shadow: 0px 0px 3px rgba(0,0,0, .3);/*この囲みに影を作る*/
 }
 
 /*写真の表示の調整*/
 /* imgタグの調整 */
 img {
-    width: 100%;
+    width: 100%;/* =600px */
     margin: 0;
-    vertical-align: top;
+    vertical-align: top;/*写真の縦方向の配置*/
 }
 
 /* headerタグ内の使用 */
@@ -31,12 +33,48 @@ header {
     background-color: #007acc;
     color: #fff;
     width: 100%;
+    position: fixed;/*headerタグの要素は固定する*/
+    top: 0;/*headerタグの位置を指定0は一番上*/
+    z-index: 100;/*headerタグに要素が被らないように大きな数字を入れて置く*/
 }
 
+/* headerタグ内のh1タグの仕様 */
 header h1 {
     margin: 0;
-    font-size: 25px;
+    font-size: 25px;/*文字の大きさ*/
     padding: 5px;
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
+    text-align: center;/*文字の配置*/
+    font-family: 'Open Sans', sans-serif;/*google fontsから*/
+}
+
+/*-------写真の中にコメント入れる---------*/
+/* clase属性photoの仕様 */
+.photo {
+    position: relative;/*親クラスの宣言*/
+}
+
+/* class属性.photo且つ.innerの仕様 */
+.photo .inner {
+    position: absolute;/* 絶対参照の宣言 */
+    bottom:0;/* 底に配置 */
+    /* right leftなどもある */
+    background-color: rgba(0,0,0, .5);
+    font-size: 20px;
+    color: #fff;
+    margin: 0; /* 外側余白を0。余白を無くす */
+    width: 100%;
+}
+/*-------写真の中にコメント入れる---------*/
+
+/* class属性inner且つpタグの仕様 */
+.inner p {
+    padding: 0px;
+    text-align: center;/* text-alignはここで指定 */
+    /*margin-left: 200px:*/
+    
+}
+/* class属性inner且つspanタグの仕様 */
+.inner span {
+    margin-left: 10px;/*pタグから10px離して表示*/
+    /*text-align: center;*/
 }

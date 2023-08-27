@@ -23,11 +23,106 @@
     </header>
     <div class="container">
         <div id="img_unit">
+            {% comment %}
             <div class="photo">
-                <img src={% static "img/img2.jpg" %}> 
-                <div class="inner"><p>コメント1<span>nickname</span></p>
+                <script>
+                    document.write('<img src={% static "img/img1.jpg"%}>');
+                    document.write('<div class="inner"><p>コメント1<span>nickname</span></p>');
+                </script>
             </div>
+            {% endcomment %}
         </div>
     </div>
+    <script>
+        //テンプレートタグの呼び出し
+        var samplefile = '{% static "img/img1.jpg"%}';
+        /*
+        if (samplefile) {
+            alert('どすこいファイルの始まりです');
+        } */
+
+        //リスト-辞書化(json化)
+        var images = [
+            {
+                "path" : '{% static "img/img1.jpg"%}',
+                "name" : "name1",
+                "caption" : "コメント1",
+            },
+            {
+                "path" : '{% static "img/img2.jpg"%}',
+                "name" : "name2",
+                "caption" : "コメント2",
+            },
+            {
+                "path" : '{% static "img/img3.jpg"%}',
+                "name" : "name3",
+                "caption" : "コメント3",
+            },
+            {
+                "path" : '{% static "img/img4.jpg"%}',
+                "name" : "name4",
+                "caption" : "コメント4",
+            },
+        ];
+
+        //リストのインデックス番号からキーで辞書の値を取得
+        //alertメソッドでポップアップで表示する
+        //alert(images[0].name+'さんの'+images[0].path+'の写真についてのコメントは'+images[0].caption+'です');
+        
+        //imageのキーで値を取得
+        /*
+        for (i of images) {
+            document.write(i.caption);
+        }*/
+
+        //########3for文の処理###########
+        //var i;
+        //var lists1 = [0,1,2,3];//インデックス番号
+        //var count = images.length;//imagesの配列の個数を確認
+        //alert(count);//4
+
+
+        //for (i of lists1) {
+        //for (i = 0;i<count;i+=1) {
+        for (var i = 0;i < images.length;i += 1) {
+            // createElementメソッドでimgタグを作る
+
+            //---写真のパス---
+            var img;
+            img = document.createElement('img');
+
+            //setAttributeメソッドでimgにsrc属性を追加
+            img.setAttribute('src',images[i].path);
+
+            //appendChildメソッドでidがimg_unitのものにimgを追加
+            document.getElementById('img_unit').appendChild(img);
+            //---写真のパス---
+
+            //---コメント,作成者を表示---
+            var caption;
+            caption = document.createElement('div');
+            //クラス名を定義
+            caption.className = 'inner';
+            //コメント,作成者部分をcaptionに格納
+            caption.innerHTML = '<p>' + images[i].caption + '<span>' + images[i].name + '</span></p>';
+
+            document.getElementById('img_unit').appendChild(caption);
+            //---コメント,作成者を表示---
+
+            //---class="photo"のdivタグを作成---
+            var div;
+            div = document.createElement('div');
+            div.className = 'photo';
+
+            //class="photo"のdivタグにここで作成したimg,caption(divタグclass="inner",コメント)を追加(内包)
+            div.appendChild(img);
+            div.appendChild(caption);
+
+            document.getElementById('img_unit').appendChild(div);
+            //---class="photo"のdivタグを作成---
+        };
+        
+        
+    </script>
 </body>
 </html>
