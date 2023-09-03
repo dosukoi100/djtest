@@ -150,3 +150,16 @@ def basic3_2(request):
 def jq1(request):
     context = {}
     return render(request,'js_test/jq1.html',context)
+
+#Vue.jsの学習
+def vue1(request):
+    context = {
+        'message' : 'どすこいDjango',
+    }
+    return render(request,'js_test/vue1.html',context)
+
+#Vue.jsの学習 写真・コメント・作成者を表示する
+def vue2(request):
+    context = {}
+    return render(request,'js_test/vue2.html',context)
+

@@ -1,0 +1,114 @@
+{# ともすたフォトライブラリー用html #}
+{# Vue.jsの学習 写真・コメント・作成者を表示 #}
+
+<!DOCTYPE html>
+{#<html lang="en">#}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    {#<meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {#------- google fontsからのフォント(文字書式用)CSS ---使わなくても良い----#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap" rel="stylesheet">
+    {#------- google fontsからのCSS -------#}
+
+    <link rel="stylesheet" href={% static "css/style_photo.css" %}>
+    <title>My Photo</title>
+</head>
+<body>
+    <header>
+        <h1>My Photos</h1>
+    </header>
+    <div class="container">
+        <div id="img_unit">
+            {% comment '単発の写真・コメント・作成者を表示' %}
+            <div class="photo">
+                {# ':'をsrcの前に付ける事によりVue.jsのプレースホルダーを宣言し括弧を外す #}
+                <img :src="pho" >
+                <div class="inner"><p>[[ comm ]]<span>[[ name ]]</span></p><div>
+            </div>
+            {% endcomment %}
+
+            {# Vue.js+Ajaxでjsonデータを取得する #}
+            {# Vue.jsのfor文 #}
+            <div class="photo" v-for="Photo in Photos">
+                <img :src="Photo.path" >
+                <div class="inner"><p>[[ Photo.caption ]]<span>[[ Photo.name ]]</span></p><div>
+            </div>
+        </div>
+
+    </div>
+    {# jQueryのロード #}
+    <script src={% static "js/jquery1.js" %}></script>
+    {# Vue.jsのCDN #}
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    {#<seript src="https://unpkg.com/vue"></script>#}
+    <script>
+        'use strict';
+
+        //Vue.jsでAjax通信を使ってjsonデータを受け取り
+        const app = Vue.createApp({
+            data() {
+                return {
+                    //空のリストを用意
+                    Photos: [],
+                };
+            },
+            created: function() {
+                let self = this;
+                //jQueryでjsonデータを取得してdataに格納してリストPhotosに格納
+                $.getJSON('{% static "json/test1.json" %}',function(data) {
+                    self.Photos = data;
+                });
+            },
+            delimiters: ['[[', ']]'],
+        });
+        
+        //これ忘れ気味なので注意!!
+        app.mount('#img_unit');
+
+        //単発の写真・コメント・作成者を表示
+        /*
+        const app = Vue.createApp({
+            data() {
+                return {
+                    pho : "/static/img/img01.jpg",
+                    comm : 'カワイイリョージー',
+                    name : 'リョージ〜'
+
+                };
+            },
+            delimiters : ['[[',']]']
+        });
+
+        app.mount('#img_unit');
+        */
+
+        /*
+        //画像を表示
+        //画像データ(json)を受け取る。受け取ったデータはdataに格納
+        $.getJSON('{% static "json/test1.json" %}',function(data) {
+            //alert('jsonデータを受け取りました');//Ajaxの確認
+
+            //受け取ったデータはdataとなるのでその長さを条件式に入れる
+            for (var i=0;i<data.length;i+=1) {
+                //新しい要素を追加'=.createElementに似ている
+                $('<div class="photo"><div>')
+                    //appendメソッドで要素を追加
+                    .append('<img src="'+ data[i].path + '">')
+                    .append('<div class="inner"><p>' + data[i].caption + '<span>' + data[i].name + '</span></p></div>')
+                    //appendToメソッドで追加した要素の追加先を指定
+                    .appendTo('#img_unit');
+            };
+        });
+        */
+        
+
+        
+        
+    </script>
+</body>
+</html>

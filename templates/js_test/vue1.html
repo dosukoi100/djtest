@@ -1,5 +1,5 @@
 {# ともすたフォトライブラリー用html #}
-{# jQueryの学習 #}
+{# Vue.jsの学習 #}
 
 <!DOCTYPE html>
 {#<html lang="en">#}
@@ -28,41 +28,22 @@
             ここに新しいタグ等が作成される
             {% endcomment %}
         </div>
+
+        {# プレイスホルダーの練習用 #}
+        <div id="vue_unit">
+            {{  message  }}<br>{# Djangoのテンプレート変数表示 #}
+            [[  message ]] {# Vue.jsのプレースホルダーの表示 #}
+        </div>
     </div>
     {# jQueryのロード #}
     <script src={% static "js/jquery1.js" %}></script>
+    {# Vue.jsのCDN #}
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    {#<seript src="https://unpkg.com/vue"></script>#}
     <script>
         'use strict';
 
-        //jQueryの基本書式
-        /*
-        $('セレクター').メソッド('パラメーター');
-        または
-        jquery('セレクター').メソッド('パラメーター');
-
-        $またはjQuery
-        jQueryの宣言
-
-        セレクターcssのセレクターに似ている
-        id属性  #
-        class属性　.
-
-        メソッド
-        html  文字列などの表示を書き換えるメソッド '=. jsのelement.innerHTML
-        css   スタイルを書き換えるメソッド
-        */
-
-        //$('#img_unit').html('ここに、画像リストが表示されます');
-        //$('#img_unit').css('margin-top','100px');
-        //$('#img_unit').css('text-align','center');
-
-        //メソッドチェーンが使える
-
-        //$('#img_unit').html('ここに、画像リストが表示されます').css('margin-top','100px');
-
-        //$('.container').html('どすこい');
-        //$('.container').css('margin-top','100px');
-
+        
         //画像を表示
         //画像データ(json)を受け取る。受け取ったデータはdataに格納
         $.getJSON('{% static "json/test1.json" %}',function(data) {
@@ -79,6 +60,46 @@
                     .appendTo('#img_unit');
             };
         });
+        
+
+        /*//ver3のVue.js
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+            const message = ref('どすこいワールド')
+            return {
+                message
+            }
+            }
+        }).mount('#vue_unit')
+        */
+
+        /*//ver2のVue.js
+        var app = new Vue({
+            el : '#vue_unit',
+            data : {
+                message : 'どすこいワールド'
+            }
+        });
+        */
+
+        //ver3のVue.js
+        const app = Vue.createApp({
+            data() {
+                return {
+                    //Vue.jsのプレースホルダー
+                    message: 'どすこいVue.js'
+                };
+            },
+            //Djangoのテンプレートタグを{{ }}
+            //Vue.jsのプレースホルダーを[[ ]]にする記述
+            delimiters: ['[[',']]']
+        });
+        
+        //id属性vue_unitにappをマウント(組み込み)する
+        app.mount('#vue_unit');
+        
     </script>
 </body>
 </html>

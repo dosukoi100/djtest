@@ -18,4 +18,6 @@ urlpatterns = [
     path('basic3-1/',views.basic3_1),#勉強会後ともスタに沿った物
     path('basic3-2/',views.basic3_2),#Ajax通信のところ
     path('jq1/',views.jq1),#jQueryの学習
+    path('vue1/',views.vue1),#Vue.jsの学習
+    path('vue2/',views.vue2),#Vue.jsの学習 写真・コメント等
 ]
