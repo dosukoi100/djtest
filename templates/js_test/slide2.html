@@ -1,0 +1,150 @@
+{# Ajax通信・jQuery・Vue.jsを使って写真・コメント・作成者を表示するスライドショー #}
+
+<!DOCTYPE html>
+{#<html lang="en">#}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    {#<meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {#------- google fontsからのフォント(文字書式用)CSS ---使わなくても良い----#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap" rel="stylesheet">
+    {#------- google fontsからのCSS -------#}
+
+    <link rel="stylesheet" href={% static "css/style_photo.css" %}>
+    <title>Ajax-jQuery-Vue.jsスライドショー</title>
+</head>
+<body>
+    <header>
+        <h1>Ajax-jQuery-Vue.jsスライドショー</h1>
+    </header>
+    <div class="container">
+        <div id="img_unit">
+            {# Vue.js+Ajaxでjsonデータを取得する #}
+            {# Vue.jsのfor文 #}
+            <div class="photo" v-for="Photo in Photos">
+                <img :src="Photo.path" >
+                <div class="inner"><p>[[ Photo.caption ]]<span>[[ Photo.name ]]</span></p></div>
+            </div>
+        </div>
+
+    </div>
+    {# jQueryのロード #}
+    <script src={% static "js/jquery1.js" %}></script>
+    {# Vue.jsのCDN #}
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    {#<seript src="https://unpkg.com/vue"></script>#}
+
+    {# --------  Ajax-jQuery-Vue.js ---------#}
+    <script>
+        'use strict';
+
+        //Vue.jsでAjax通信を使ってjsonデータを受け取り
+        const app = Vue.createApp({
+            data() {
+                return {
+                    //空のリストを用意
+                    Photos: [],
+                };
+            },
+            created: function() {
+                let self = this;
+                //jQueryでjsonデータを取得してdataに格納してリストPhotosに格納
+                $.getJSON('{% static "json/test1.json" %}',function(data) {
+                    self.Photos = data;
+                });
+            },
+            delimiters: ['[[', ']]'],
+        });
+        
+        //これ忘れ気味なので注意!!
+        app.mount('#img_unit');
+
+    </script>
+    {# --------  Ajax-jQuery-Vue.js ---------#}
+
+    {# ---- スライドショー用 ---------------- #}
+    {% comment %}
+    <script>
+        //外部カウント変数slideIndexを定義
+        let slideIndex = 0;
+        //ファイルが読み込まれたらshowSlides()関数を呼び出す
+        showSlides();
+        
+        //showSlides()関数を定義
+        function showSlides() {
+        //クラス名slideの要素を取得して変数に格納
+        //const slides = document.getElementsByClassName("slide");
+
+        const slides = document.getElementsByClassName("photo");
+
+        //for文で要素を展開
+        for (let i = 0; i < slides.length; i++) {
+            //プロパティstyle.displayをnoneとすると表示しない
+            slides[i].style.display = "none";
+        }
+
+        //カウント変数slideIndexに1を足す
+        slideIndex++;
+
+        //条件式を満たさないとslideIndexを1に戻す
+        //例)slideIndex=4,slides.length=4の時など
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+
+        //変数slidesのインデックス番号を表示してそれ以外を非表示とする
+        slides[slideIndex - 1].style.display = "block";
+
+        //showSlides()関数を、5000ミリ秒間隔で実行
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+        
+    </script>
+    {% endcomment %}
+
+    {# ###DOMの読み込みタイミングを調整。DOMが読み出された後にjsが実行する### #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            //外部カウント変数slideIndexを定義
+            let slideIndex = 0;
+            //ファイルが読み込まれたらshowSlides()関数を呼び出す
+            showSlides();
+            
+            //showSlides()関数を定義
+            function showSlides() {
+            //クラス名slideの要素を取得して変数に格納
+            //const slides = document.getElementsByClassName("slide");
+
+            const slides = document.getElementsByClassName("photo");
+
+            //for文で要素を展開
+            for (let i = 0; i < slides.length; i++) {
+                //プロパティstyle.displayをnoneとすると表示しない
+                slides[i].style.display = "none";
+            }
+
+            //カウント変数slideIndexに1を足す
+            slideIndex++;
+
+            //条件式を満たさないとslideIndexを1に戻す
+            //例)slideIndex=4,slides.length=4の時など
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+
+            //変数slidesのインデックス番号を表示してそれ以外を非表示とする
+            slides[slideIndex - 1].style.display = "block";
+
+            //showSlides()関数を、5000ミリ秒間隔で実行
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
+            }    
+        });
+        
+    </script>
+    {# ---- スライドショー用 ---------------- #}
+</body>
+</html>

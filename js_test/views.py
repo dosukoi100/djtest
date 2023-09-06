@@ -163,3 +163,12 @@ def vue2(request):
     context = {}
     return render(request,'js_test/vue2.html',context)
 
+#スライドショーを表示
+def slide1(request):
+    context = {}
+    return render(request,'js_test/slide1.html',context)
+
+#Ajax通信・jQuery・Vue.jsを使ったスライドショー
+def slide2(request):
+    context = {}
+    return render(request,'js_test/slide2.html',context)

@@ -20,4 +20,6 @@ urlpatterns = [
     path('jq1/',views.jq1),#jQueryの学習
     path('vue1/',views.vue1),#Vue.jsの学習
     path('vue2/',views.vue2),#Vue.jsの学習 写真・コメント等
+    path('slide1/',views.slide1),#スライドショーを表示
+    path('slide2/',views.slide2),#Ajax通信・jQuery・Vue.jsを使ったスライドショー
 ]

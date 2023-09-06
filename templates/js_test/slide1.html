@@ -1,0 +1,76 @@
+{# スライドショー用 #}
+
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    {#<meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {#------- google fontsからのフォント(文字書式用)CSS ---使わなくても良い----#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap" rel="stylesheet">
+    {#------- google fontsからのCSS -------#}
+
+    <link rel="stylesheet" href={% static "css/style_photo.css" %}>
+    <title>My Slide-Show</title>
+  {#<link rel="stylesheet" type=type="text/css" href={% static "css/slide1.css" %}>#}
+</head>
+<body>
+    <header>
+        <h1>My Slide-Show</h1>
+    </header>
+    <div class="slideshow-container">
+        <div class="slide fade">
+            <img src={% static "img/img1.jpg" %} alt="Image 1">
+        </div>
+        <div class="slide fade">
+            <img src={% static "img/img2.jpg" %} alt="Image 2">
+        </div>
+        <div class="slide fade">
+            <img src={% static "img/img3.jpg" %} alt="Image 3">
+        </div>
+        <div class="slide fade">
+            <img src={% static "img/img4.jpg" %} alt="Image 4">
+        </div>
+    </div>
+
+    {#<script src="script.js"></script>#}
+    <script>
+        //外部カウント変数slideIndexを定義
+        let slideIndex = 0;
+        //ファイルが読み込まれたらshowSlides()関数を呼び出す
+        showSlides();
+        
+        //showSlides()関数を定義
+        function showSlides() {
+        //クラス名slideの要素を取得して変数に格納
+        const slides = document.getElementsByClassName("slide");
+
+        //for文で要素を展開
+        for (let i = 0; i < slides.length; i++) {
+            //プロパティstyle.displayをnoneとすると表示しない
+            slides[i].style.display = "none";
+        }
+
+        //カウント変数slideIndexに1を足す
+        slideIndex++;
+
+        //条件式を満たさないとslideIndexを1に戻す
+        //例)slideIndex=4,slides.length=4の時など
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+
+        //変数slidesのインデックス番号を表示してそれ以外を非表示とする
+        slides[slideIndex - 1].style.display = "block";
+
+        //showSlides()関数を、5000ミリ秒間隔で実行
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+        
+    </script>
+</body>
+</html>
