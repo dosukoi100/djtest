@@ -1,0 +1,22 @@
+/* ぷよぷよアニメーション */
+
+.square {
+    height: 100px ;
+    width:  600px ;
+    background: rgb(54, 82, 205);
+    
+    padding: 50px auto ;
+    margin: 100px auto;
+}
+  
+/* General Styling */
+body {
+    padding: 2rem;
+}
+h1 {
+    font-size: 4rem;
+    /*position: absolute;*/
+    top: 150px;
+    left: 100px;
+    text-align: center;
+}

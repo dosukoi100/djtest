@@ -22,4 +22,7 @@ urlpatterns = [
     path('vue2/',views.vue2),#Vue.jsの学習 写真・コメント等
     path('slide1/',views.slide1),#スライドショーを表示
     path('slide2/',views.slide2),#Ajax通信・jQuery・Vue.jsを使ったスライドショー
+    path('ani1/',views.ani1),#アニメーションの学習Web Animations API
+    path('ani2/',views.ani2),#ともすたWeb Animations API
+    path('ani3/',views.ani3),#ぷよぷよアニメーション
 ]

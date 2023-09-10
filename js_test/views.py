@@ -172,3 +172,20 @@ def slide1(request):
 def slide2(request):
     context = {}
     return render(request,'js_test/slide2.html',context)
+
+#アニメーションの学習Web Animations API
+def ani1(request):
+    context = {}
+    return render(request,'js_test/ani1.html',context)
+
+#ともすたWeb Animations API
+def ani2(request):
+    context = {}
+    return render(request,'js_test/ani2.html',context)
+
+#ぷよぷよアニメーション
+def ani3(request):
+    context = {}
+    return render(request,'js_test/ani3.html',context)
+
+

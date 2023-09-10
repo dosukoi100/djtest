@@ -1,0 +1,23 @@
+{# ともすた簡単Web Animations API #}
+
+<!DOCTYPE html>
+<html lang="ja">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ともすたWeb Animations API</title>
+    <linK rel="stylesheet" href={%static "css/tomosta_web-Animations-api.css"%}>
+</head>
+<body>
+    <div>
+        <h1 id="heading">どすこいちーたん大冒険</h1>
+        <h2 id="opt">どすこいフュージョン</h2>
+    </div>
+
+
+    {# 今回は外部のjsファイルを読み取る #}
+    <script src={% static "js/tomosta_web-animations-api.js" %}></script>
+</body>
+</html>

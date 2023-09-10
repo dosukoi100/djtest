@@ -1,0 +1,99 @@
+{# アニメーションWeb Animations APIの学習1 #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {% load  static %}    
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/ani.css"%}>
+    <title>アニメーションテスト1</title>
+</head>
+<body>
+<div id="wrap">
+    <div id="head">
+        <h1><a href="/"><a/>アニメーションテスト1</h1>
+    </div>
+    <div id="content">
+        <div id="lead">
+            {% if user.is_authenticated %}
+            <p>{{ user.username }}さん御疲れ様です</p>
+            <P></p>
+            {% endif %}
+        </div>
+        <div>
+            {% comment %}
+            <script>
+                // body 要素にアニメーションを加えるよ
+                document.body.animate(
+                    {
+                    // 背景色を #fcc から #f66 に変化させる
+                    background: ["#fcc", "#f66","#106eb7","#f66","#fcc", "#f66","#106eb7"],
+                    },
+                    {
+                    // 終了時の状態で止める
+                    fill: "forwards",
+                    // 3000ミリ秒（＝3秒）かけてアニメーション
+                    duration: 50000
+                    }
+                );
+            </script>
+            {% endcomment %}
+            {# バックグランドの背景色を断続的に変化させる #}
+            <script>
+                // アニメーションを再生する関数
+                function playAnimation() {
+                    const animation = document.body.animate(
+                        {
+                            // 背景色を #fcc から #f66 に変化させる
+                            background: ["#fcc", "#f66","#106eb7","rgb(216, 213, 26)","#f66","#fcc", "#f66","#106eb7","rgb(216, 213, 26)"],
+                        },
+                        {
+                            // 終了時の状態で止める
+                            fill: "forwards",
+                            // 3000ミリ秒（＝3秒）かけてアニメーション
+                            duration: 5000
+                        }
+                    );
+        
+                    // アニメーションの再生が終了したら再度アニメーションを再生
+                    animation.onfinish = function () {
+                        playAnimation();
+                    };
+                }
+        
+                // 最初のアニメーションを開始
+                playAnimation();
+
+                //文字の色を変化させていくアニメーションの関数
+                function textAnimation() {
+                    const strtext = document.body.animate(
+                        {
+                            // 背景色を #fcc から #f66 に変化させる
+                            //background: ["#fcc", "#f66","#106eb7","rgb(216, 213, 26)","#f66","#fcc", "#f66","#106eb7","rgb(216, 213, 26)"],
+                            //文字の色を変更していく
+                            color: ["yellow","red","blue"],
+                        },
+                        {
+                            // 終了時の状態で止める
+                            fill: "forwards",
+                            // 3000ミリ秒（＝3秒）かけてアニメーション
+                            duration: 1000
+                        }
+                    );
+        
+                    // アニメーションの再生が終了したら再度アニメーションを再生
+                    strtext.onfinish = function () {
+                        textAnimation();
+                    };
+                }
+
+                //  最初の文字を開始
+                textAnimation();
+
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>
